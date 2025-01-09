@@ -19,3 +19,5 @@ The node project name is the-peoples-princess because of the node naming convent
 ## Helpful links for mutual aid info:
 
 - Spreadsheet of go fund me's for the Eaten fire: [Spreadsheet](https://docs.google.com/spreadsheets/d/1-E4297kxs5RK9n6weccJxy6RK24b8ZEcZN69_rAhBJw/edit?gid=0#gid=0)
+
+## Connected to main branch in vercel project
