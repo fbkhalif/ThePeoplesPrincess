@@ -3,11 +3,6 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
 import { ArrowLeft, ArrowRight, Plus, Trash2 } from "lucide-react"
 
 const steps = ["Personal Info", "Posting Details", "Additional Info", "Review"]
@@ -76,8 +71,8 @@ export default function CreatePostingPage() {
           <>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="creatorName">Your Name</Label>
-                <Input
+                <label htmlFor="creatorName">Your Name</label>
+                <input
                   type="text"
                   id="creatorName"
                   name="creatorName"
@@ -87,8 +82,8 @@ export default function CreatePostingPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="location">Location</Label>
-                <Input
+                <label htmlFor="location">Location</label>
+                <input
                   type="text"
                   id="location"
                   name="location"
@@ -98,19 +93,17 @@ export default function CreatePostingPage() {
                 />
               </div>
               <div>
-                <Label>This posting is for:</Label>
-                <RadioGroup
-                  defaultValue="self"
-                  onValueChange={handleRadioChange}>
+                <label>This posting is for:</label>
+                <div defaultValue="self">
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="self" id="self" />
-                    <Label htmlFor="self">Myself</Label>
+                    <input type="radio" value="self" id="self" />
+                    <label htmlFor="self">Myself</label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="other" id="other" />
-                    <Label htmlFor="other">Someone else</Label>
+                    <input type="radio" value="other" id="other" />
+                    <label htmlFor="other">Someone else</label>
                   </div>
-                </RadioGroup>
+                </div>
               </div>
             </div>
           </>
@@ -121,7 +114,7 @@ export default function CreatePostingPage() {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="title">Title</Label>
-                <Input
+                <input
                   type="text"
                   id="title"
                   name="title"
@@ -132,7 +125,7 @@ export default function CreatePostingPage() {
               </div>
               <div>
                 <Label htmlFor="description">Description</Label>
-                <Textarea
+                <textarea
                   id="description"
                   name="description"
                   value={formData.description}
@@ -143,7 +136,7 @@ export default function CreatePostingPage() {
               </div>
               <div>
                 <Label htmlFor="imageUrl">Image URL</Label>
-                <Input
+                <input
                   type="url"
                   id="imageUrl"
                   name="imageUrl"
@@ -154,7 +147,7 @@ export default function CreatePostingPage() {
               </div>
               <div>
                 <Label htmlFor="link">External Link</Label>
-                <Input
+                <input
                   type="url"
                   id="link"
                   name="link"
@@ -172,7 +165,7 @@ export default function CreatePostingPage() {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="gofundmeUrl">GoFundMe URL (optional)</Label>
-                <Input
+                <input
                   type="url"
                   id="gofundmeUrl"
                   name="gofundmeUrl"
@@ -184,7 +177,7 @@ export default function CreatePostingPage() {
                 <Label htmlFor="originalPostingUrl">
                   Original Posting URL (if from another site)
                 </Label>
-                <Input
+                <input
                   type="url"
                   id="originalPostingUrl"
                   name="originalPostingUrl"
@@ -196,7 +189,7 @@ export default function CreatePostingPage() {
                 <Label>Additional Links</Label>
                 {formData.additionalLinks.map((link, index) => (
                   <div key={index} className="flex items-center space-x-2 mt-2">
-                    <Input
+                    <input
                       type="text"
                       placeholder="Link Title"
                       value={link.title}
@@ -205,7 +198,7 @@ export default function CreatePostingPage() {
                       }
                       required
                     />
-                    <Input
+                    <input
                       type="url"
                       placeholder="URL"
                       value={link.url}
@@ -214,22 +207,22 @@ export default function CreatePostingPage() {
                       }
                       required
                     />
-                    <Button
+                    <button
                       type="button"
                       variant="outline"
                       size="icon"
                       onClick={() => removeLink(index)}>
                       <Trash2 className="h-4 w-4" />
-                    </Button>
+                    </button>
                   </div>
                 ))}
-                <Button
+                <button
                   type="button"
                   variant="outline"
                   onClick={addLink}
                   className="mt-2">
                   <Plus className="h-4 w-4 mr-2" /> Add Link
-                </Button>
+                </button>
               </div>
             </div>
           </>
@@ -328,14 +321,14 @@ export default function CreatePostingPage() {
         {renderStep()}
         <div className="flex justify-between">
           {step > 0 && (
-            <Button
+            <button
               type="button"
               variant="outline"
               onClick={() => setStep(step - 1)}>
               <ArrowLeft className="mr-2 h-4 w-4" /> Previous
-            </Button>
+            </button>
           )}
-          <Button type="submit">
+          <button type="submit">
             {step < steps.length - 1 ? (
               <>
                 Next <ArrowRight className="ml-2 h-4 w-4" />
@@ -343,7 +336,7 @@ export default function CreatePostingPage() {
             ) : (
               "Create Posting"
             )}
-          </Button>
+          </button>
         </div>
       </form>
     </div>

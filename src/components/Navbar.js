@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { PrimaryButton } from "../components/PrimaryButton"
 
 const mutualAidResources = [
   { name: "Mutual Aid Hub", url: "https://www.mutualaidhub.org/" },
@@ -20,7 +20,7 @@ export function Navbar() {
             Mutual Aid Postings
           </Link>
           <div className="relative group">
-            <Button variant="secondary">Mutual Aid Resources</Button>
+            <button variant="secondary">Mutual Aid Resources</button>
             <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out">
               <div className="bg-secondary text-secondary-foreground rounded-md shadow-lg overflow-hidden">
                 {mutualAidResources.map((resource) => (
