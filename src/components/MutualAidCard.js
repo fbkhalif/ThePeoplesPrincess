@@ -1,9 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter } from "../components/ui/card"
+import { PrimaryButton } from "../components/PrimaryButton"
 import { ArrowRight, MapPin, User, DollarSign, LinkIcon } from "lucide-react"
-import { MutualAidPosting } from "@/types/MutualAidPosting"
+import { MutualAidPosting } from "../types/MutualAidPosting"
 
 export function MutualAidCard({ posting }) {
   return (
@@ -66,11 +66,9 @@ export function MutualAidCard({ posting }) {
         )}
       </CardContent>
       <CardFooter className="bg-primary">
-        <Button asChild variant="secondary" className="w-full">
-          <Link href={`/posting/${posting.id}`}>
-            View Details <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
-        </Button>
+        <Link href={`/posting/${posting.id}`}>
+          View Details <ArrowRight className="ml-2 h-4 w-4" />
+        </Link>
       </CardFooter>
     </Card>
   )
