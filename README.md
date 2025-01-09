@@ -1,2 +1,0 @@
-# ThePeoplesPrincess
-Mutual Slayed
