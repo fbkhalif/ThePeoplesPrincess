@@ -5,8 +5,14 @@
 ## Tech stack:
 Next.JS, Vercel Frontend and Backend, ESLint, and Tailwind
 ## To run locally:
-- ```npm install```
-- ```npm run dev```
+**Build Command:** `next build`
+
+**Development Command**: `next dev --port $PORT`
+
+**Install Command**: `npm install`
+
+**Output Directory**: `Next.js default`
+
 ## More notes:
 The node project name is the-peoples-princess because of the node naming convention
 
