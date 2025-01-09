@@ -1,4 +1,3 @@
-# Node modules
 node_modules
 
 # Logs
@@ -12,6 +11,10 @@ pnpm-debug.log*
 # Dependency directories
 node_modules/
 jspm_packages/
+
+.DS_Store
+
+.next/
 
 # Next.js build output
 .next/
