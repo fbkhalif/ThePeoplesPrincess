@@ -1,8 +1,16 @@
+"use client"
 import Link from "next/link"
 import { PrimaryButton } from "../components/PrimaryButton"
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Button,
+} from "@nextui-org/react"
 
 const mutualAidResources = [
-  { name: "Mutual Aid Hub", url: "https://www.mutualaidhub.org/" },
+  { name: "Mutual Aid LA Network", url: "https://mutualaidla.org/" },
   { name: "COVID-19 Mutual Aid UK", url: "https://covidmutualaid.org/" },
   {
     name: "Mutual Aid Disaster Relief",
@@ -11,33 +19,31 @@ const mutualAidResources = [
   { name: "National Mutual Aid Network", url: "https://www.mutualaidhub.org/" },
 ]
 
-export function Navbar() {
+export function Navbar2() {
   return (
-    <nav className="bg-primary text-primary-foreground shadow-md">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold">
-            Mutual Aid Postings
+    <Navbar
+      maxWidth={"full"}
+      className="text-white min-w-full h-12 shadow-md px-0 border border-b">
+      <div className="container mx-0 flex justify-between items-center h-full px-0">
+        <NavbarBrand>
+          <Link href="/" className="text-xs font-extrabold text-secondary">
+            👑 The People's Princess
           </Link>
-          <div className="relative group">
-            <button variant="secondary">Mutual Aid Resources</button>
-            <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out">
-              <div className="bg-secondary text-secondary-foreground rounded-md shadow-lg overflow-hidden">
-                {mutualAidResources.map((resource) => (
-                  <a
-                    key={resource.name}
-                    href={resource.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block px-4 py-2 text-sm hover:bg-secondary-foreground hover:text-secondary">
-                    {resource.name}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        </NavbarBrand>
+        <NavbarContent justify="end">
+          <Link
+            href="/resources"
+            className="text-xs mr-2 hover:text-slate-400 text-black">
+            Mutual Aid Resources
+          </Link>
+
+          <Link
+            className="text-xs border text-white py-1 px-2 whitespace-nowrap  bg-secondary hover:bg-secondary-dark  border-secondary-light rounded-xl"
+            href="/create-posting">
+            Create new post +
+          </Link>
+        </NavbarContent>
       </div>
-    </nav>
+    </Navbar>
   )
 }

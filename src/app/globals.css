@@ -5,15 +5,19 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --gofundme: rgb(1, 169, 93);
+  --zelle: rgb(108, 28, 211);
+  --venmo: rgb(0, 149, 255);
 }
 
-@media (prefers-color-scheme: dark) {
+/* Add darkmode later */
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
 }
-
+*/
 body {
   color: var(--foreground);
   background: var(--background);

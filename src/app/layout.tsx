@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { Inter } from "next/font/google"
-import { Navbar } from "../components/Navbar"
+import { Navbar2 } from "../components/Navbar"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
+        <Navbar2 />
         <main className="min-h-screen bg-background">{children}</main>
       </body>
     </html>

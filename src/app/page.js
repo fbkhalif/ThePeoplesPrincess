@@ -11,44 +11,39 @@ const mockPostings = [
     description:
       "Help us collect non-perishable food items for our local shelter. Every donation counts!",
     imageUrl: "/placeholder.svg?height=300&width=400",
-    link: "https://example.com/food-drive",
+    additionalLinks: [
+      { url: "https://example.com/food-drive", title: "original" },
+      { url: "https://example.com/food-drive", title: "resources" },
+    ],
+    creatorName: "John Doe",
+    gofundmeUrl:
+      "https://www.gofundme.com/f/help-uncle-trini-rebuild-after-fire/donate?attribution_id=undefined&utm_campaign=unknown&utm_medium=customer&utm_source=website_widget",
+    location: "EX",
+    forSelf: "no",
+    venmo: "https://www.gofundme.com/",
+    zelle: "https://www.zelle.com/",
   },
   {
-    id: "2",
-    title: "Community Garden Volunteers Needed",
-    description:
-      "Join us in maintaining our community garden. No experience necessary, just a willingness to get your hands dirty!",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    link: "https://example.com/garden-volunteers",
-  },
-  {
-    id: "3",
-    title: "Free Tech Support for Seniors",
-    description:
-      "Offering free tech support to seniors in our community. Help with smartphones, computers, and more.",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    link: "https://example.com/tech-support",
-  },
-  {
-    id: "4",
-    title: "Clothing Donation Drive",
-    description:
-      "Collecting gently used clothing for families in need. All sizes and types of clothing welcome.",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    link: "https://example.com/clothing-drive",
+    id: "100",
+    title: "None",
+    imageUrl: "next.svg",
+    link: "#",
   },
 ]
 
 export default function Home() {
   return (
     <div className="container mx-auto py-8 px-4">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Mutual Aid Postings</h1>
-        <Link href="/create-posting">
-          <div className="mr-2 h-4 w-4" /> Create New Posting
-        </Link>
+      <div className="text-center justify-center mb-8 mt-6">
+        <h1 className="text-2xl text-center font-bold">Mutual Aid Postings</h1>
+        <p className="text-slate-500 text-xs py-4 font-light md:px-20 lg:px-32 sm:px-4">
+          Click on mutual aid postings, learn more and donate. Anything helps!
+          The wildfires are devastating California as we speak, so a lot of
+          postings are related to that so far.
+        </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <div className="grid grid-cols-1 pt-7 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {mockPostings.map((posting) => (
           <MutualAidCard key={posting.id} posting={posting} />
         ))}
