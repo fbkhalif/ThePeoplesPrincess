@@ -10,7 +10,7 @@ import {
   getKeyValue,
   Chip,
 } from "@nextui-org/react"
-
+import { useState } from "react"
 const rows = [
   {
     key: "4",
@@ -21,10 +21,17 @@ const rows = [
   },
   {
     key: "5",
-    name: "Eaten Fire Go Fund Me",
+    name: "Eaton Fire Go Fund Me",
     url: "https://sites.google.com/view/denacommunityrelief/go-fund-me?authuser=0",
     tags: ["eaton fire"],
     info: "relief list",
+  },
+  {
+    key: "6",
+    name: "Help LA Rebuild: Direct Aid",
+    url: "https://docs.google.com/spreadsheets/d/1sW8N8dlP21jisoMSePIl4M2A-rQFCDV5uzPgwM_7ma8/edit",
+    tags: ["gofundme", "family"],
+    info: "direct aid info",
   },
 
   // Add more resources as needed
@@ -34,11 +41,6 @@ const columns = [
     key: "name",
     label: "NAME",
   },
-  {
-    key: "url",
-    label: "URL",
-  },
-
   {
     key: "info",
     label: "INFO",
@@ -69,14 +71,14 @@ export default function ResourcesPage() {
         <TableBody items={rows}>
           {(item) => (
             <TableRow key={item.key}>
-              <TableCell>{item.name}</TableCell>
               <TableCell>
                 <a
                   className="text-secondary hover:text-secondary-200"
                   href={item.url}>
-                  Link
+                  {item.name}
                 </a>
               </TableCell>
+
               <TableCell className="text-xs text-slate-600">
                 {item.info}
               </TableCell>
@@ -85,7 +87,7 @@ export default function ResourcesPage() {
                   <Chip
                     variant={"flat"}
                     size="sm"
-                    color="secondary"
+                    color="primary"
                     className="ml-1"
                     key={tag}>
                     {tag}
