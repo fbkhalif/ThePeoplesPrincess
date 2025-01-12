@@ -68,8 +68,15 @@ export default function ResourcesPage() {
         </p>
       </div>
       <NavbarPostings />
-      <Table className="min-w-full border-none mt-2 bg-white">
-        <TableHeader className="bg-slate-200" columns={columns}>
+      <Table
+        classNames={{
+          base: "min-w-full border-none mt-2 bg-white",
+          table: "overflow-x-auto ",
+          tr: "border-b",
+        }}>
+        <TableHeader
+          className="bg-slate-50 border-none border-t-default-foreground"
+          columns={columns}>
           {(column) => (
             <TableColumn key={column.key}>{column.label}</TableColumn>
           )}
@@ -79,18 +86,17 @@ export default function ResourcesPage() {
             <TableRow key={item.id}>
               <TableCell>
                 <a
-                  className="text-secondary hover:text-secondary-200"
+                  className="text-secondary text-xs hover:text-secondary-200"
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer">
                   {item.name}
                 </a>
               </TableCell>
-
-              <TableCell className="text-xs text-slate-600">
-                {item.desc}
+              <TableCell className="text-xs max-h-32 overflow-scroll sm:max-h-24 text-slate-600">
+                <div className="max-h-32 overflow-y-auto">{item.desc}</div>
               </TableCell>
-              <TableCell className="">
+              <TableCell className="sm:w-1/6">
                 {item.tags && item.tags.length > 0 && item.tags[0] != "" && (
                   <div>
                     {item.tags.map((tag) => (
