@@ -11,6 +11,8 @@ import {
   Chip,
 } from "@nextui-org/react"
 import { useState } from "react"
+import NavbarPostings from "../../components/NavbarPostings"
+
 const rows = [
   {
     key: "4",
@@ -61,7 +63,8 @@ export default function ResourcesPage() {
           Are a Few of Them. As well as other resources.
         </p>
       </div>
-      <Table className="min-w-full bg-white">
+      <NavbarPostings />
+      <Table className="min-w-full border-none mt-2 bg-white">
         <TableHeader className="bg-slate-200" columns={columns}>
           {(column) => (
             <TableColumn key={column.key}>{column.label}</TableColumn>
@@ -74,7 +77,9 @@ export default function ResourcesPage() {
               <TableCell>
                 <a
                   className="text-secondary hover:text-secondary-200"
-                  href={item.url}>
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer">
                   {item.name}
                 </a>
               </TableCell>
