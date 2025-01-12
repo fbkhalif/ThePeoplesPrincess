@@ -108,23 +108,25 @@ export default function PostingPage() {
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to all postings
       </Link>
       <Card className="bg-white p-4 mx-10 rounded-lg shadow-lg overflow-hidden border-1">
-        <CardBody className="grid sm:grid-cols-1 md:grid-cols-3">
+        <CardBody className="grid gap-4 sm:grid-cols-1  md:grid-cols-3">
           <div className="">
             <Image
-              src={"/favicon.ico"}
+              src={"/diana3.avif"}
               alt={posting.title}
-              width={300}
+              layout="responsive"
+              className={"object-cover"}
+              width={400}
               height={300}
             />
           </div>
           <div className="col-span-2">
             <CardHeader className="flex px-0 py-0 pb-1 justify-between w-full">
-              <p className="text-lg font-bold text-secondary">
+              <p className="text-md font-bold text-secondary">
                 {posting.title}
               </p>
-              <div className="flex items-center text-sm text-muted-foreground">
+              <div className="flex items-center text-xs text-slate-500 text-sm text-muted-foreground">
                 <User className="mr-2 h-4 w-4" />
-                <span>{posting.creatorName}</span>
+                <span className="whitespace-nowrap">{posting.creatorName}</span>
                 <MapPin className="ml-4 mr-2 h-4 w-4" />
                 <span>{posting.location}</span>
               </div>
