@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.6.11",
+    "@prisma/client": "^6.2.1",
+    "@vercel/postgres": "^0.10.0",
     "framer-motion": "^11.16.4",
     "lucide": "^0.469.0",
     "lucide-react": "^0.469.0",
@@ -24,6 +26,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.1.4",
     "postcss": "^8",
+    "prisma": "^6.2.1",
     "tailwindcss": "^3.4.1"
   }
 }

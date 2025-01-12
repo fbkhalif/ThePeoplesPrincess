@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Navbar,
   NavbarBrand,
@@ -17,7 +19,7 @@ import {
 } from "@nextui-org/react"
 import { useDisclosure } from "@nextui-org/react"
 import { SearchIcon } from "lucide-react" // Replace with your preferred icon library
-
+import MutualAidResourceForm from "./MutualAidResourceForm"
 export default function CustomNavbar() {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -63,38 +65,13 @@ export default function CustomNavbar() {
               className="text-xs border-1 p-2"
               onPress={onOpen}
               variant="solid">
-              Add Post +
+              Add Resource +
             </Button>
           </NavbarItem>
         </NavbarContent>
       </Navbar>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Pop-up Form
-              </ModalHeader>
-              <ModalBody>
-                <Input label="Name" placeholder="Describe the resource" />
-                <Input label="Link" placeholder="Url of resources" />
-                <Input
-                  label="Description"
-                  placeholder="Summary of what the Mutual aid resource is for"
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Submit
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+
+      <MutualAidResourceForm isOpen={isOpen} onClose={onClose} />
     </>
   )
 }
