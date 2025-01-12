@@ -60,7 +60,7 @@ export function Navbar2() {
             Mutual Aid Resources
           </Link>
           <Link
-            className="text-xs border text-white py-1 px-2 whitespace-nowrap bg-secondary hover:bg-secondary-dark border-secondary-light rounded-xl"
+            className="text-xs border max-w-32 text-white py-1 px-2 whitespace-nowrap bg-secondary hover:bg-secondary-dark border-secondary-light rounded-xl"
             href="/create-posting">
             Create New Post +
           </Link>
@@ -75,8 +75,9 @@ export function Navbar2() {
                 className="text-xs hover:text-slate-400 text-black w-full">
                 Mutual Aid Resources
               </Link>
+
               <Link
-                className="text-xs border text-white py-1 px-2 whitespace-nowrap bg-secondary hover:bg-secondary-dark border-secondary-light rounded-xl w-full text-center"
+                className="text-xs border max-w-32 text-white py-1 px-2 whitespace-nowrap bg-secondary hover:bg-secondary-dark border-secondary-light rounded-xl w-full text-center"
                 href="/create-posting">
                 Create New Post +
               </Link>
