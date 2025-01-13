@@ -9,16 +9,24 @@ import {
   Input,
   Form,
   Button,
+  CheckboxGroup,
+  Checkbox,
 } from "@nextui-org/react"
 
-export default function ResourceForm({ isOpen, onClose }) {
+export default function ResourceForm({ isOpen, onClose, categoriesOptions }) {
   const [name, setName] = useState("")
   const [link, setLink] = useState("")
   const [desc, setDesc] = useState("")
   const [tags, setTags] = useState("")
+  const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [errors, setErrors] = useState({})
+
+  const handleCategoryChange = (selectedCategories) => {
+    setCategories(selectedCategories) // Update selected categories
+  }
+  console.log(categories)
   // Handle form submission
   async function onSubmit(e) {
     e.preventDefault()
@@ -29,6 +37,7 @@ export default function ResourceForm({ isOpen, onClose }) {
       name,
       link,
       tags: tags.split(",").map((tag) => tag.trim()), // Convert comma-separated tags into an array
+      categories: categories, // Convert selected categories into an array of values, // Convert selected categories into an array of values
       desc,
     }
     try {
@@ -47,6 +56,7 @@ export default function ResourceForm({ isOpen, onClose }) {
         setName("")
         setLink("")
         setTags("")
+        setCategories([])
         setDesc("")
         onClose() // Close the modal after successful submission
       } else {
@@ -96,12 +106,35 @@ export default function ResourceForm({ isOpen, onClose }) {
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />
-            <Input
+            {/* <Input
               label="Tags"
               placeholder="Comma-separated tags e.g. google sheets, LA fires"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-            />
+            /> */}
+            {/* Add category selection */}
+            <CheckboxGroup
+              size="sm"
+              orientation="horizontal"
+              defaultValue={["Other"]}
+              value={categories}
+              onChange={handleCategoryChange}
+              classNames={{
+                base: "text-xs gap-1 pl-2 px-1",
+                label: "text-slate-700 text-xs",
+              }}
+              label="Select categories">
+              <div>
+                {categoriesOptions.map((category) => (
+                  <Checkbox
+                    className="mr-1"
+                    key={category.value}
+                    value={category.value}>
+                    {category.label}
+                  </Checkbox>
+                ))}
+              </div>
+            </CheckboxGroup>
             <ModalFooter className="px-0">
               <Button color="danger" variant="light" onPress={onClose}>
                 Close

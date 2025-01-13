@@ -12,6 +12,7 @@ model ma_resources {
   id         Int       @id @default(autoincrement())
   name       String
   link       String
+  categories       String[]
   tags       String[]
   desc      String?  // Optional description field (can be null)
   created_dt DateTime? @default(now()) @db.Timestamp(6)

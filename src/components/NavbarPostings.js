@@ -17,12 +17,25 @@ import {
   ModalHeader,
   DropdownItem,
 } from "@nextui-org/react"
+import { useState } from "react"
 import { useDisclosure } from "@nextui-org/react"
 import { SearchIcon } from "lucide-react" // Replace with your preferred icon library
 import MutualAidResourceForm from "./MutualAidResourceForm"
-export default function CustomNavbar() {
+import CustomSelect from "./CustomSelect"
+export default function CustomNavbar({
+  selectedCategories,
+  filterItemsCategories,
+  categoriesOptions,
+  handleFilterChange,
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [selectedCategory, setSelectedCategory] = useState("All")
 
+  const handleCategoryChange = (keys) => {
+    setSelectedCategory(new Set(keys)) // Update selected categories state
+    handleFilterChange(new Set(keys)) // Update the parent state through the handler
+  }
+  console.log(selectedCategory)
   return (
     <>
       <Navbar>
@@ -44,7 +57,7 @@ export default function CustomNavbar() {
         </NavbarContent>
 
         <NavbarContent justify="end">
-          <NavbarItem>
+          {/* <NavbarItem>
             <Dropdown>
               <DropdownTrigger>
                 <Button size="sm" className="border-1" variant="bordered">
@@ -55,9 +68,35 @@ export default function CustomNavbar() {
                 <DropdownItem key="newest">Newest</DropdownItem>
                 <DropdownItem key="oldest">Oldest</DropdownItem>
                 <DropdownItem key="popular">Popular</DropdownItem>
+                <DropdownItem key="alphabetical"></DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </NavbarItem>
+          <NavbarItem>
+            {" "}
+            <Dropdown>
+              <DropdownTrigger>
+                <Button size="sm" className="border-1" variant="bordered">
+                  {selectedCategories.size > 0
+                    ? `${selectedCategories.size} Selected`
+                    : "Categories"}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Filter options"
+                selectionMode="multiple"
+                selectedKeys={filterItemsCategories}
+                onSelectionChange={(e) => {
+                  setSelectedCategory(e.target.value)
+                }}>
+                {filterItemsCategories.map((category) => (
+                  <DropdownItem key={category.value}>
+                    {category.label}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+          </NavbarItem> */}
           <NavbarItem>
             <Button
               color="primary"
@@ -71,7 +110,11 @@ export default function CustomNavbar() {
         </NavbarContent>
       </Navbar>
 
-      <MutualAidResourceForm isOpen={isOpen} onClose={onClose} />
+      <MutualAidResourceForm
+        isOpen={isOpen}
+        onClose={onClose}
+        categoriesOptions={categoriesOptions}
+      />
     </>
   )
 }

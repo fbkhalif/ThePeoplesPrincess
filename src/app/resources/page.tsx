@@ -10,7 +10,7 @@ import {
   getKeyValue,
   Chip,
 } from "@nextui-org/react"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import NavbarPostings from "../../components/NavbarPostings"
 
 const columns = [
@@ -23,12 +23,34 @@ const columns = [
     label: "INFO",
   },
   {
-    key: "tags",
-    label: "TAGS",
+    key: "categories",
+    label: "CATEGORY",
   },
+]
+const categories = {
+  "Essential Resources": "bg-red-100",
+  "Monetary Aid": "bg-success-200",
+  "Volunteer Opportunities": "bg-purple-200",
+  "Health & Wellness": "bg-primary-200",
+  "Disaster Relief": "bg-secondary-200",
+  "Crowdsourced Listings": "bg-pink-200",
+  Other: "bg-default-200",
+}
+
+const categoriesOptions = [
+  { value: "Essential Resources", label: "⛑️ Essential Resources " },
+  { value: "Monetary Aid", label: "💰 Monetary Aid" },
+  { value: "Volunteer Opportunities", label: "🫰🏽 Volunteer Opportunities" },
+  { value: "Health & Wellness", label: "🩺 Health & Wellness" },
+  { value: "Disaster Relief", label: "🧯 Disaster Relief" },
+  { value: "Crowdsourced Listings", label: "📋 Crowdsourced Listings" },
+  { value: "Other", label: "Other" },
+  //{ value: "All", label: "All" },
 ]
 
 export default function ResourcesPage() {
+  const [selectedCategory, setSelectedCategory] = useState("All")
+
   const [resources, setResources] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -46,6 +68,13 @@ export default function ResourcesPage() {
 
     fetchResources()
   }, [])
+  const filteredItems = useMemo(() => {
+    return selectedCategory === "All"
+      ? resources
+      : resources.filter((item) =>
+          item.categories.some((category) => category === selectedCategory)
+        )
+  }, [selectedCategory, resources])
 
   if (loading) {
     return (
@@ -54,6 +83,11 @@ export default function ResourcesPage() {
       </div>
     )
   }
+  const getCategoryLabel = (value) => {
+    const category = categoriesOptions.find((option) => option.value === value)
+    return category ? category.label : value
+  }
+  console.log(filteredItems, selectedCategory)
   return (
     <div className="container mx-auto p-4">
       <div className="text-center justify-center mb-8 mt-6">
@@ -67,7 +101,12 @@ export default function ResourcesPage() {
           free to add your own links to other resources.
         </p>
       </div>
-      <NavbarPostings />
+      <NavbarPostings
+        categoriesOptions={categoriesOptions}
+        selectedCategories={selectedCategory}
+        filterItemsCategories={categoriesOptions}
+        handleFilterChange={setSelectedCategory}
+      />
       <Table
         classNames={{
           base: "min-w-full border-none mt-2 bg-white",
@@ -81,7 +120,7 @@ export default function ResourcesPage() {
             <TableColumn key={column.key}>{column.label}</TableColumn>
           )}
         </TableHeader>
-        <TableBody items={resources}>
+        <TableBody items={filteredItems}>
           {(item) => (
             <TableRow key={item.id}>
               <TableCell>
@@ -97,20 +136,25 @@ export default function ResourcesPage() {
                 <div className="max-h-32 overflow-y-auto">{item.desc}</div>
               </TableCell>
               <TableCell className="sm:w-1/6">
-                {item.tags && item.tags.length > 0 && item.tags[0] != "" && (
-                  <div>
-                    {item.tags.map((tag) => (
-                      <Chip
-                        variant="flat"
-                        size="sm"
-                        color="primary"
-                        className="ml-1 mb-1 text-[10px]"
-                        key={tag}>
-                        {tag}
-                      </Chip>
-                    ))}
-                  </div>
-                )}
+                {item.categories &&
+                  item.categories.length > 0 &&
+                  item.categories[0] != "" && (
+                    <div>
+                      {item.categories.map((tag, index) => (
+                        <Chip
+                          variant="flat"
+                          size="sm"
+                          // color={categories[tag] || "default"}
+                          classNames={{
+                            base: `${categories[tag]} ml-1 border mb-1 text-[10px]`,
+                            content: "color-black/25 text-black/50",
+                          }}
+                          key={tag}>
+                          {getCategoryLabel(tag)}
+                        </Chip>
+                      ))}
+                    </div>
+                  )}
               </TableCell>
             </TableRow>
           )}

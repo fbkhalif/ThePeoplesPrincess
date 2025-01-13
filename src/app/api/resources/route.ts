@@ -22,7 +22,7 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     // Parse the incoming JSON data from the request
-    const { name, link, tags, desc } = await req.json()
+    const { name, link, tags, categories, desc } = await req.json()
 
     // Input validation
     if (!name || !link) {
@@ -57,6 +57,7 @@ export async function POST(req) {
         name,
         link,
         tags,
+        categories,
         desc, // Optional description field
       },
     })
