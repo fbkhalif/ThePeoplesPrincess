@@ -32,6 +32,7 @@ const mockPostings = [
     venmo: "https://www.gofundme.com/",
     zelle: "https://www.zelle.com/",
     contactLink: "https://www.instagram.com/",
+    repostNumer: 4,
   },
   {
     id: "2",
@@ -49,45 +50,6 @@ const mockPostings = [
         title: "Planting Schedule",
         url: "https://example.com/planting-schedule",
       },
-    ],
-  },
-  {
-    id: "3",
-    title: "Free Tech Support for Seniors",
-    description:
-      "Offering free tech support to seniors in our community. Help with smartphones, computers, and more. Sessions are held every Tuesday and Thursday from 2 PM to 4 PM at the local library. Volunteers are also needed to assist with one-on-one tutoring.",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    link: "https://example.com/tech-support",
-    creatorName: "Tech Helpers Association",
-    location: "Silicon Valley, CA",
-    forSelf: false,
-    gofundmeUrl: "https://gofundme.com/example-tech-support",
-    originalPostingUrl: "https://techhelpers.org/senior-support",
-    additionalLinks: [
-      {
-        title: "Volunteer Application",
-        url: "https://example.com/tech-volunteer",
-      },
-      { title: "Tech Support FAQ", url: "https://example.com/tech-faq" },
-    ],
-  },
-  {
-    id: "4",
-    title: "Clothing Donation Drive",
-    description:
-      "Collecting gently used clothing for families in need. All sizes and types of clothing welcome. We are especially in need of winter coats, boots, and children's clothing. Donations can be dropped off at any fire station in the city throughout the month of November.",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    link: "https://example.com/clothing-drive",
-    creatorName: "Sarah Johnson",
-    location: "Minneapolis, MN",
-    forSelf: false,
-    gofundmeUrl: "https://gofundme.com/example-clothing-drive",
-    additionalLinks: [
-      {
-        title: "Donation Locations",
-        url: "https://example.com/donation-locations",
-      },
-      { title: "Most Needed Items", url: "https://example.com/needed-items" },
     ],
   },
 ]
@@ -148,11 +110,11 @@ export default function PostingPage() {
             </p>
             <hr></hr>
             <div className="space-y-4 mt-2">
-              {posting.originalPostingUrl && (
+              {posting?.additionalLinks && (
                 <p className="text-sm text-muted-foreground">
                   Original posting:{" "}
                   <a
-                    href={posting.originalPostingUrl}
+                    //href={posting.originalPostingUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-secondary hover:underline">
@@ -160,9 +122,7 @@ export default function PostingPage() {
                   </a>
                 </p>
               )}
-              <p className="text-md font-semibold  text-secondary">
-                Donation links
-              </p>
+              <p className="text-md font-semibold  text-secondary">Donate!</p>
               {posting.gofundmeUrl && (
                 <Button
                   variant="solid"

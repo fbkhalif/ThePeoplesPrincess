@@ -1,4 +1,5 @@
 "use client"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -6,38 +7,263 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
+  Chip,
+  Input,
   Button,
 } from "@nextui-org/react"
+import moment from "moment"
+
 import { PrimaryButton } from "../components/PrimaryButton"
 import {
   ArrowRight,
   XCircleIcon,
   MapPin,
   User,
+  Clock10Icon,
   DollarSign,
+  ArrowBigRight,
+  CheckCircleIcon,
+  StarIcon,
+  ExternalLinkIcon,
+  GlobeIcon,
+  ArrowRightFromLine,
+  ClockIcon,
+  CopyIcon,
+  ClipboardCopy,
+  ShareIcon,
   LinkIcon,
 } from "lucide-react"
+import CommentCard from "./CommentCard"
 import { MutualAidPosting } from "../types/MutualAidPosting"
+import { ShuffleIcon } from "lucide-react"
 
 export function MutualAidCard({ posting }) {
-  const defaultImageUrl = "favicon.ico"
+  const [isStarFilled, setIsStarFilled] = useState(false)
+  const [isGlobeFilled, setIsGlobeFilled] = useState(false)
+  const [isShuffleFilled, setIsShuffleFilled] = useState(false)
+  const [comments, setComments] = useState(posting.comments || [])
+  const [newComment, setNewComment] = useState("")
+  const [amountRaised, setAmountRaised] = useState(0)
+
+  const handleToggleStar = async () => {
+    setIsStarFilled(!isStarFilled)
+    const response = await fetch(`/api/likes?postId=${posting.id}`, {
+      method: "POST",
+      body: JSON.stringify({
+        postId: posting.id,
+        likedBy: "anonymous",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    if (response.ok) {
+      const data = await response.json()
+    } else {
+      console.error("Failed to fetch comments")
+    }
+  }
+  const handleToggleShuffle = async () => {
+    setIsShuffleFilled(!isShuffleFilled)
+
+    const response = await fetch(`/api/reposts?postId=${posting.id}`, {
+      method: "POST",
+      body: JSON.stringify({
+        postId: posting.id,
+        repostedBy: "anonymous",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    if (response.ok) {
+      const data = await response.json()
+    } else {
+      console.error("Failed to fetch comments")
+    }
+  }
+
+  useEffect(() => {
+    async function fetchComments() {
+      const response = await fetch(`/api/comments?postId=${posting.id}`)
+      if (response.ok) {
+        const data = await response.json()
+        setComments(data)
+      } else {
+        console.error("Failed to fetch comments")
+      }
+    }
+
+    fetchComments()
+  }, [posting.id])
+
+  useEffect(() => {
+    async function fetchAmountRaised() {
+      if (posting.gofundmeUrl) {
+        try {
+          const response = await fetch(
+            `/api/gofundme?url=${encodeURIComponent(posting.gofundmeUrl)}`
+          )
+          if (response.ok) {
+            const data = await response.json()
+            setAmountRaised(data.parsedAmount || 0)
+            //console.log("Amount raised:", amountRaised)
+          } else {
+            console.error("Failed to fetch GoFundMe data")
+          }
+        } catch (error) {
+          console.error("Error fetching GoFundMe data:", error)
+        }
+      }
+    }
+
+    fetchAmountRaised()
+  }, [])
+
+  const handleShare = async () => {
+    const detailsUrl = `${window.location.origin}/posting/${posting.id}`
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          url: detailsUrl,
+          title: posting.title,
+          text: posting.description,
+        })
+        // console.log("Content shared successfully")
+      } catch (error) {
+        console.error("Error sharing content:", error)
+      }
+    } else {
+      //console.log("Web Share API is not supported in this browser")
+    }
+  }
+
+  const handleAddComment = async () => {
+    if (newComment.trim() === "") return
+
+    const newCommentData = {
+      text: newComment,
+      commenter: "Anonymous", // For now, we assume anonymous commenting
+    }
+
+    // Add the new comment locally for demonstration
+    setComments([...comments, newCommentData])
+    setNewComment("")
+
+    try {
+      // Make a POST request to create a new comment in the backend
+      const response = await fetch("/api/comments", {
+        method: "POST",
+        body: JSON.stringify({
+          postId: posting.id,
+          ...newCommentData,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to create comment.")
+      }
+
+      // Get the new comment from the backend (in case there are any additional fields added on the backend)
+      const newCommentFromBackend = await response.json()
+
+      // Update the state with the newly added comment
+      setComments([...comments, newCommentFromBackend])
+    } catch (error) {
+      console.error("Error adding comment:", error)
+    }
+  }
+
   return (
     <Card shadow="lg" style={{}} className="rounded-md p-2 ">
       <CardBody>
-        <CardHeader className="text-md mb-1 font-bold p-0 text-secondary">
-          <p>{posting.title || "No title"}</p>
+        <CardHeader className="text-md mb-1 grid grid-cols-5 font-bold p-0 text-secondary">
+          <p className="col-span-4">{posting.title || "No title"}</p>
+          <div className="flex flex-row gap-2 ml-auto">
+            <ShareIcon
+              onClick={handleShare}
+              className=" text-gray-400 cursor-pointer h-5 w-5"
+            />
+          </div>
         </CardHeader>
         <div className="flex text-gray-500 items-center mb-4 text-muted-foreground text-xs">
-          <User className="mr-1 h-4 w-4" />
+          <Clock10Icon className="mr-1 h-4 w-4" />
+          {posting.updatedAt ? (
+            <span>
+              {moment(posting.updatedAt).format("MMMM Do YYYY") ||
+                "Last updated: N/A"}
+            </span>
+          ) : (
+            <span className="text-slate-500">
+              {"Created at: " +
+                moment(posting.createdAt).format("MMMM Do YYYY") ||
+                "Created at: N/A"}
+            </span>
+          )}
+          <User className="ml-2 mr-1 h-4 w-4" />
           <span>{posting.creatorName || "Anonymous"}</span>
-          <MapPin className="ml-4 mr-1 h-4 w-4" />
+          <MapPin className="ml-2 mr-1 h-4 w-4" />
           <span>{posting.location || "Unknown"}</span>
         </div>
-        <p className="text-foreground text-xs mb-4 line-clamp-3">
-          {posting.description || "No description"}
-        </p>
+        <div className="grid grid-rows-1">
+          <p className="text-foreground text-xs mb-2  line-clamp-3">
+            {posting.description || "No description"}
+          </p>
+          {posting.gofundmeUrl && posting.amountRaised != 0 && (
+            <Chip
+              color="success"
+              variant="dot"
+              className="text-xs border-green-200 mb-8">
+              Go fund me amount raised: ${posting.amountRaised || "unknown"}
+            </Chip>
+          )}
+        </div>
+        <div className="flex flex-row text-primary-light mb-2">
+          <div className="flex text-xs mr-2 items-center">
+            <Button
+              startContent={
+                <StarIcon
+                  fill={isStarFilled ? "rgba(87,59,246, 0.5)" : "none"}
+                  className="h-4 w-4"
+                />
+              }
+              size="sm"
+              className="p-1"
+              color={isStarFilled ? "primary" : "none"}
+              variant="light"
+              onPress={handleToggleStar}>
+              <span>{posting.likesNumber || 0} Likes</span>
+            </Button>
+          </div>
+          <div className="flex text-xs text-primary-light items-center mr-2 gap-1">
+            <Button
+              startContent={<ShuffleIcon className="h-4 w-4" />}
+              size="sm"
+              className="p-1"
+              color={isShuffleFilled ? "primary" : "none"}
+              variant="light"
+              onPress={handleToggleShuffle}>
+              <span>{posting.repostNumber || 0} Reposts</span>
+            </Button>
+          </div>
+          <div className="flex text-xs  text-primary-light items-center gap-1">
+            <Button
+              startContent={<GlobeIcon className="h-4 w-4" />}
+              size="sm"
+              className="p-1"
+              disabled
+              color="primary-light"
+              variant="light">
+              <span>{posting.views || 0} Views</span>
+            </Button>
+          </div>
+        </div>
         <div className="bg-pink-100/50 p-3 rounded-xl">
-          <p className="text-xs text-secondary/50">Links</p>
+          <p className="text-xs text-secondary">Donate below!</p>
           {posting.gofundmeUrl && (
             <Button
               className="text-white ml-1"
@@ -127,10 +353,53 @@ export function MutualAidCard({ posting }) {
           )}
         </div>
       </CardBody>
-      <CardFooter className="float-right text-right text-white inline-block text-xs pt-3 text-primary">
-        <Link className="align-middle" href={`/posting/${posting.id}`}>
-          View Details →
-        </Link>
+
+      <CardFooter className="inline-block text-xs pt-3 text-right text-primary">
+        <Button
+          className="text-xs"
+          size="small"
+          href={`/posting/${posting.id}`}
+          color="primary"
+          variant="light"
+          endContent={<ArrowRightFromLine className="h-4 w-4" />}>
+          View Details
+        </Button>
+      </CardFooter>
+      <hr></hr>
+      <CardFooter className="grid  grid-cols-1">
+        <p className="col-span-1 mb-1 text-sm text-slate-600">Comments</p>
+        {/* Textarea for adding a comment */}
+        {/* Comments List */}
+        <div className="mt-4 mb-4 ">
+          {comments.length > 0 ? (
+            comments.map((comment, index) => (
+              <CommentCard
+                key={index}
+                user={{ name: comment.commenter }}
+                comment={comment.text}
+              />
+            ))
+          ) : (
+            <p className="text-xs text-muted-foreground">No comments yet.</p>
+          )}
+        </div>
+        <div className="flex text-xs gap-2 justify-between">
+          <Input
+            type="text"
+            size="sm"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="Add a comment..."
+          />
+          <Button
+            onPress={handleAddComment}
+            size="sm"
+            className="text-xs p-4"
+            color="primary"
+            variant="solid">
+            Post Comment
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   )

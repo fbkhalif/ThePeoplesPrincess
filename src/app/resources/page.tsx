@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react"
 import React, { useState, useEffect, useMemo } from "react"
 import NavbarPostings from "../../components/NavbarPostings"
-
+import { Share } from "lucide-react"
 const columns = [
   {
     key: "name",
@@ -109,9 +109,9 @@ export default function ResourcesPage() {
       />
       <Table
         classNames={{
-          base: "min-w-full border-none mt-2 bg-white",
+          base: "min-w-full border-one mt-2 bg-white",
           table: "overflow-x-auto ",
-          tr: "border-b",
+          tr: "border rounded-lg m-2",
         }}>
         <TableHeader
           className="bg-slate-50 border-none border-t-default-foreground"

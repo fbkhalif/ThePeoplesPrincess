@@ -17,3 +17,51 @@ model ma_resources {
   desc      String?  // Optional description field (can be null)
   created_dt DateTime? @default(now()) @db.Timestamp(6)
 }
+
+model mp_posting {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String
+  imageUrl      String?
+  creatorName   String
+  gofundmeUrl   String?
+  location      String
+  forSelf       Boolean
+  venmo         String?
+  zelle         String?
+  createdAt     DateTime @default(now())
+  amountRaised  Float
+  repostNumber  Int      @default(0)
+  likesNumber         Int      @default(0)
+  views         Int      @default(0) // New field for tracking views
+  additionalLinks Json
+  comments      mp_comments[]  // Relation to Comment model
+  reposts       mp_reposts[]  // Relation to mp_reposts model
+  likes         mp_likes[]  // Relation to mp_likes model
+  // Add new fields as needed, e.g., isFeatured, isHighlighted, etc.
+}
+
+model mp_comments {
+  id        Int      @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
+  commenter String?   // Optional for anonymous users
+  post      mp_posting  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+}
+
+model mp_reposts {
+  id        Int      @id @default(autoincrement())
+  repostedBy String
+  repostedAt DateTime @default(now())
+  post      mp_posting  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+}
+
+model mp_likes {
+  id        Int      @id @default(autoincrement())
+  likedBy String
+  likedAt DateTime @default(now())
+  post      mp_posting  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+}

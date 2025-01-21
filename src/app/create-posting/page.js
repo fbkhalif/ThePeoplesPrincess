@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { Input } from "@nextui-org/react"
 import { ArrowLeft, ArrowRight, Plus, Trash2 } from "lucide-react"
 
 const steps = ["Personal Info", "Posting Details", "Additional Info", "Review"]
@@ -11,16 +12,17 @@ export default function CreatePostingPage() {
   const router = useRouter()
   const [step, setStep] = useState(0)
   const [formData, setFormData] = useState({
-    creatorName: "",
-    location: "",
-    forSelf: true,
-    title: "",
+    title: "Posting",
     description: "",
+    creatorName: "Anonymous",
+    location: "",
+    forSelf: false,
     imageUrl: "",
-    link: "",
     gofundmeUrl: "",
-    originalPostingUrl: "",
-    additionalLinks: [{ title: "", url: "" }],
+    amountRaised: 0,
+    additionalLinks: [],
+    venmo: "",
+    zelle: "",
   })
 
   const handleChange = (e) => {
