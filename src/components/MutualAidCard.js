@@ -37,7 +37,9 @@ import CommentCard from "./CommentCard"
 import { MutualAidPosting } from "../types/MutualAidPosting"
 import { ShuffleIcon } from "lucide-react"
 
-export function MutualAidCard({ posting }) {
+export function MutualAidCard({ posting: initialPosting }) {
+  const [posting, setPosting] = useState(initialPosting)
+
   const [isStarFilled, setIsStarFilled] = useState(false)
   const [isGlobeFilled, setIsGlobeFilled] = useState(false)
   const [isShuffleFilled, setIsShuffleFilled] = useState(false)
@@ -47,39 +49,45 @@ export function MutualAidCard({ posting }) {
 
   const handleToggleStar = async () => {
     setIsStarFilled(!isStarFilled)
-    const response = await fetch(`/api/likes?postId=${posting.id}`, {
-      method: "POST",
-      body: JSON.stringify({
-        postId: posting.id,
-        likedBy: "anonymous",
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    if (response.ok) {
-      const data = await response.json()
-    } else {
-      console.error("Failed to fetch comments")
+    if (!isStarFilled) {
+      const response = await fetch(`/api/likes?postId=${posting.id}`, {
+        method: "POST",
+        body: JSON.stringify({
+          postId: posting.id,
+          likedBy: "anonymous",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      if (response.ok) {
+        const { newPost, updatedPost } = await response.json()
+        setPosting(updatedPost)
+      } else {
+        console.error("Failed to fetch comments")
+      }
     }
   }
   const handleToggleShuffle = async () => {
     setIsShuffleFilled(!isShuffleFilled)
-
-    const response = await fetch(`/api/reposts?postId=${posting.id}`, {
-      method: "POST",
-      body: JSON.stringify({
-        postId: posting.id,
-        repostedBy: "anonymous",
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    if (response.ok) {
-      const data = await response.json()
-    } else {
-      console.error("Failed to fetch comments")
+    if (!isShuffleFilled) {
+      const response = await fetch(`/api/reposts?postId=${posting.id}`, {
+        method: "POST",
+        body: JSON.stringify({
+          postId: posting.id,
+          repostedBy: "anonymous",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      if (response.ok) {
+        const { newPost, updatedPost } = await response.json()
+        console.log(updatedPost)
+        setPosting(updatedPost)
+      } else {
+        console.error("Failed to fetch comments")
+      }
     }
   }
 
@@ -97,7 +105,7 @@ export function MutualAidCard({ posting }) {
     fetchComments()
   }, [posting.id])
 
-  useEffect(() => {
+  /* useEffect(() => {
     async function fetchAmountRaised() {
       if (posting.gofundmeUrl) {
         try {
@@ -118,7 +126,7 @@ export function MutualAidCard({ posting }) {
     }
 
     fetchAmountRaised()
-  }, [])
+  }, []) */
 
   const handleShare = async () => {
     const detailsUrl = `${window.location.origin}/posting/${posting.id}`
@@ -190,8 +198,8 @@ export function MutualAidCard({ posting }) {
             />
           </div>
         </CardHeader>
-        <div className="flex text-gray-500 items-center mb-4 text-muted-foreground text-xs">
-          <Clock10Icon className="mr-1 h-4 w-4" />
+        <div className="flex text-gray-500 items-center mb-4 text-muted-foreground text-[12px]">
+          <Clock10Icon className="mr-1 h-3 w-3" />
           {posting.updatedAt ? (
             <span>
               {moment(posting.updatedAt).format("MMMM Do YYYY") ||
@@ -199,25 +207,24 @@ export function MutualAidCard({ posting }) {
             </span>
           ) : (
             <span className="text-slate-500">
-              {"Created at: " +
-                moment(posting.createdAt).format("MMMM Do YYYY") ||
-                "Created at: N/A"}
+              {"Created: " + moment(posting.createdAt).format("MMMM Do YYYY") ||
+                "Created: N/A"}
             </span>
           )}
-          <User className="ml-2 mr-1 h-4 w-4" />
+          <User className="ml-2 mr-1 h-3 w-3" />
           <span>{posting.creatorName || "Anonymous"}</span>
-          <MapPin className="ml-2 mr-1 h-4 w-4" />
+          <MapPin className="ml-2 mr-1 h-3 w-3" />
           <span>{posting.location || "Unknown"}</span>
         </div>
         <div className="grid grid-rows-1">
-          <p className="text-foreground text-xs mb-2  line-clamp-3">
+          <p className="text-foreground text-xs mb-2 overflow-scroll max-h-24">
             {posting.description || "No description"}
           </p>
           {posting.gofundmeUrl && posting.amountRaised != 0 && (
             <Chip
               color="success"
               variant="dot"
-              className="text-xs border-green-200 mb-8">
+              className="text-xs border-accent-light/30 mb-8">
               Go fund me amount raised: ${posting.amountRaised || "unknown"}
             </Chip>
           )}
@@ -263,7 +270,7 @@ export function MutualAidCard({ posting }) {
           </div>
         </div>
         <div className="bg-pink-100/50 p-3 rounded-xl">
-          <p className="text-xs text-secondary">Donate below!</p>
+          <p className="text-xs text-secondary mb-1">Donate below!</p>
           {posting.gofundmeUrl && (
             <Button
               className="text-white ml-1"
@@ -295,7 +302,7 @@ export function MutualAidCard({ posting }) {
           )}
           {posting.zelle && (
             <Button
-              className="text-white mb-2 ml-1 mt-1"
+              className="text-white mb-2 ml-1"
               size="sm"
               style={{ backgroundColor: "var(--zelle)" }}
               startContent={<DollarSign className="h-4 w-4" />}>
@@ -355,19 +362,23 @@ export function MutualAidCard({ posting }) {
       </CardBody>
 
       <CardFooter className="inline-block text-xs pt-3 text-right text-primary">
-        <Button
-          className="text-xs"
-          size="small"
-          href={`/posting/${posting.id}`}
-          color="primary"
-          variant="light"
-          endContent={<ArrowRightFromLine className="h-4 w-4" />}>
-          View Details
-        </Button>
+        <Link href={`/posting/${posting.id}`} passHref>
+          <Button
+            className="text-xs"
+            size="small"
+            //  href={`/posting/${posting.id}`}
+            color="primary"
+            variant="light"
+            endContent={<ArrowRightFromLine className="h-4 w-4" />}>
+            View Details
+          </Button>
+        </Link>
       </CardFooter>
       <hr></hr>
-      <CardFooter className="grid  grid-cols-1">
-        <p className="col-span-1 mb-1 text-sm text-slate-600">Comments</p>
+      <CardFooter className="grid max-h-48 overflow-scroll grid-cols-1">
+        <p className="col-span-1 mb-1 text-sm max-h-36 overflow-scroll text-slate-600">
+          Comments
+        </p>
         {/* Textarea for adding a comment */}
         {/* Comments List */}
         <div className="mt-4 mb-4 ">
@@ -394,7 +405,7 @@ export function MutualAidCard({ posting }) {
           <Button
             onPress={handleAddComment}
             size="sm"
-            className="text-xs p-4"
+            className="text-xs p-4 px-6"
             color="primary"
             variant="solid">
             Post Comment

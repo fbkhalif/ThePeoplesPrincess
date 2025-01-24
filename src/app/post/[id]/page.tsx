@@ -2,7 +2,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { notFound, useParams } from "next/navigation"
-
+import { useState, useEffect } from "react"
 import {
   ExternalLink,
   ArrowLeft,
@@ -13,51 +13,28 @@ import {
 } from "lucide-react"
 import { Card, CardHeader, CardBody, Button } from "@nextui-org/react"
 // Mock data (in a real app, this would come from a database or API)
-const mockPostings = [
-  {
-    id: "1",
-    title: "Food Drive for Local Shelter",
-    description:
-      "Help us collect non-perishable food items for our local shelter. Every donation counts!",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    additionalLinks: [
-      { url: "https://example.com/food-drive", title: "original" },
-      { url: "https://example.com/food-drive", title: "resources" },
-    ],
-    creatorName: "John Doe",
-    gofundmeUrl:
-      "https://www.gofundme.com/f/help-uncle-trini-rebuild-after-fire/donate?attribution_id=undefined&utm_campaign=unknown&utm_medium=customer&utm_source=website_widget",
-    location: "EX",
-    forSelf: "no",
-    venmo: "https://www.gofundme.com/",
-    zelle: "https://www.zelle.com/",
-    contactLink: "https://www.instagram.com/",
-    repostNumer: 4,
-  },
-  {
-    id: "2",
-    title: "Community Garden Volunteers Needed",
-    description:
-      "Join us in maintaining our community garden. No experience necessary, just a willingness to get your hands dirty! We meet every Saturday morning from 8 AM to 12 PM. Tasks include planting, weeding, watering, and harvesting. All produce grown is donated to local food banks and soup kitchens.",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    link: "https://example.com/garden-volunteers",
-    creatorName: "John Smith",
-    location: "Greenville, SC",
-    forSelf: true,
-    additionalLinks: [
-      { title: "Garden Layout", url: "https://example.com/garden-layout" },
-      {
-        title: "Planting Schedule",
-        url: "https://example.com/planting-schedule",
-      },
-    ],
-  },
-]
 
-export default function PostingPage() {
+export default function PostingPage({ postings }) {
   const params = useParams()
-  const posting = mockPostings.find((p) => p.id === params.id)
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
 
+  useEffect(() => {
+    async function fetchPosts() {
+      const response = await fetch("/api/posts")
+      if (response.ok) {
+        const data = await response.json()
+        setPosts(data)
+      } else {
+        console.error("Failed to fetch posts")
+      }
+      setLoading(false)
+    }
+
+    fetchPosts()
+  }, [])
+
+  const posting = posts.find((p) => p.id === params.id)
   if (!posting) {
     notFound()
   }

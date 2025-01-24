@@ -23,3 +23,7 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+::selection {
+  background-color: #c10398d6; /* Highlight background color */
+  color: white; /* Highlight text color */
+}

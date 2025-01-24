@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Input } from "@nextui-org/react"
+import { Input, Textarea, RadioGroup, Button, Radio } from "@nextui-org/react"
 import { ArrowLeft, ArrowRight, Plus, Trash2 } from "lucide-react"
 
 const steps = ["Personal Info", "Posting Details", "Additional Info", "Review"]
@@ -73,39 +73,37 @@ export default function CreatePostingPage() {
           <>
             <div className="space-y-4">
               <div>
-                <label htmlFor="creatorName">Your Name</label>
-                <input
+                <Input
                   type="text"
+                  size="sm"
                   id="creatorName"
                   name="creatorName"
+                  label="Your Name"
                   value={formData.creatorName}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <label htmlFor="location">Location</label>
-                <input
+                <Input
                   type="text"
                   id="location"
+                  size="sm"
                   name="location"
+                  label="Location"
                   value={formData.location}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <label>This posting is for:</label>
-                <div defaultValue="self">
-                  <div className="flex items-center space-x-2">
-                    <input type="radio" value="self" id="self" />
-                    <label htmlFor="self">Myself</label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <input type="radio" value="other" id="other" />
-                    <label htmlFor="other">Someone else</label>
-                  </div>
-                </div>
+                <RadioGroup
+                  size="sm"
+                  className="text-sm"
+                  label="This posting is for">
+                  <Radio value="buenos-aires">Myself</Radio>
+                  <Radio value="sydney">Someone else</Radio>
+                </RadioGroup>
               </div>
             </div>
           </>
@@ -115,49 +113,28 @@ export default function CreatePostingPage() {
           <>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="title">Title</Label>
-                <input
+                <Input
                   type="text"
                   id="title"
                   name="title"
+                  label="title"
                   value={formData.title}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <Label htmlFor="description">Description</Label>
-                <textarea
+                <Textarea
                   id="description"
                   name="description"
+                  label="Description"
                   value={formData.description}
                   onChange={handleChange}
                   required
                   rows={4}
                 />
               </div>
-              <div>
-                <Label htmlFor="imageUrl">Image URL</Label>
-                <input
-                  type="url"
-                  id="imageUrl"
-                  name="imageUrl"
-                  value={formData.imageUrl}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="link">External Link</Label>
-                <input
-                  type="url"
-                  id="link"
-                  name="link"
-                  value={formData.link}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+              <div></div>
             </div>
           </>
         )
@@ -166,32 +143,53 @@ export default function CreatePostingPage() {
           <>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="gofundmeUrl">GoFundMe URL (optional)</Label>
-                <input
+                <Input
                   type="url"
                   id="gofundmeUrl"
                   name="gofundmeUrl"
+                  size="sm"
+                  label="GoFundMe URL"
                   value={formData.gofundmeUrl}
                   onChange={handleChange}
                 />
               </div>
               <div>
-                <Label htmlFor="originalPostingUrl">
-                  Original Posting URL (if from another site)
-                </Label>
-                <input
+                <Input
                   type="url"
-                  id="originalPostingUrl"
-                  name="originalPostingUrl"
-                  value={formData.originalPostingUrl}
+                  id="zellurl"
+                  name="zellurl"
+                  size="sm"
+                  label="Zelle URL"
+                  value={formData.zelle}
                   onChange={handleChange}
                 />
               </div>
               <div>
-                <Label>Additional Links</Label>
+                <Input
+                  type="url"
+                  id="venmoUrl"
+                  size="sm"
+                  name="venmoUrl"
+                  label="Venmo URL"
+                  value={formData.venmo}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <div className="flex align-center mb-4  items-center justify-between">
+                  <p>Additional Links</p>
+                  <Button
+                    variant="solid"
+                    color="primary"
+                    onPress={addLink}
+                    size="sm"
+                    startContent={<Plus className="h-4 w-4 mr-2" />}>
+                    Add Link
+                  </Button>
+                </div>
                 {formData.additionalLinks.map((link, index) => (
                   <div key={index} className="flex items-center space-x-2 mt-2">
-                    <input
+                    <Input
                       type="text"
                       placeholder="Link Title"
                       value={link.title}
@@ -200,7 +198,7 @@ export default function CreatePostingPage() {
                       }
                       required
                     />
-                    <input
+                    <Input
                       type="url"
                       placeholder="URL"
                       value={link.url}
@@ -209,22 +207,16 @@ export default function CreatePostingPage() {
                       }
                       required
                     />
-                    <button
+                    <Button
                       type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() => removeLink(index)}>
+                      color="danger"
+                      variant="flat"
+                      size="sm"
+                      onPress={() => removeLink(index)}>
                       <Trash2 className="h-4 w-4" />
-                    </button>
+                    </Button>
                   </div>
                 ))}
-                <button
-                  type="button"
-                  variant="outline"
-                  onClick={addLink}
-                  className="mt-2">
-                  <Plus className="h-4 w-4 mr-2" /> Add Link
-                </button>
               </div>
             </div>
           </>
@@ -281,17 +273,19 @@ export default function CreatePostingPage() {
     <div className="container mx-auto py-8 px-4">
       <Link
         href="/"
-        className="inline-flex items-center mb-4 text-blue-600 hover:underline">
+        className="inline-flex items-center mb-4 text-sm text-accent-light hover:text-accent-dark">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to all postings
       </Link>
-      <h1 className="text-3xl font-bold mb-8">Create New Mutual Aid Posting</h1>
+      <h1 className="text-xl text-center font-bold mb-8">
+        Create New Mutual Aid Posting
+      </h1>
       <div className="mb-8">
-        <ol className="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
+        <ol className="flex items-center w-full text-sm font-medium text-left whitespace-nowrap text-gray-500 dark:text-gray-400 sm:text-base">
           {steps.map((stepName, index) => (
             <li
               key={stepName}
               className={`flex md:w-full items-center ${
-                index < step ? "text-blue-600 dark:text-blue-500" : ""
+                index < step ? "text-accent dark:text-accent-dark" : ""
               } ${
                 index <= step
                   ? 'after:content-[""] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700'
@@ -309,7 +303,9 @@ export default function CreatePostingPage() {
                   </svg>
                 ) : (
                   <span
-                    className={`mr-2 ${index === step ? "text-blue-600" : ""}`}>
+                    className={`mr-2 ${
+                      index === step ? "text-accent-light" : ""
+                    }`}>
                     {index + 1}
                   </span>
                 )}

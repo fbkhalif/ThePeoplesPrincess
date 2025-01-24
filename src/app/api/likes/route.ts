@@ -23,8 +23,6 @@ export async function POST(request) {
         },
       },
     })
-    console.log(updatedPost, "Updated post")
-    console.log(newLike, "Updated post")
     return new Response(JSON.stringify({ newLike, updatedPost }), {
       status: 201,
     })

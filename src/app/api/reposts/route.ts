@@ -4,7 +4,6 @@ const prisma = new PrismaClient()
 
 export async function POST(request) {
   const { postId, repostedBy } = await request.json()
-  console.log(postId, repostedBy)
   try {
     // Create a new repost entry
     const newRepost = await prisma.mp_reposts.create({
@@ -23,8 +22,8 @@ export async function POST(request) {
         },
       },
     })
-    console.log(updatedPost, "Updated post")
-    console.log(newRepost, "Updated post")
+    //console.log(updatedPost, "Updated post")
+
     return new Response(JSON.stringify({ newRepost, updatedPost }), {
       status: 201,
     })
