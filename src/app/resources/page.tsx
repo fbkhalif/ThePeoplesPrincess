@@ -68,6 +68,7 @@ export default function ResourcesPage() {
 
     fetchResources()
   }, [])
+
   const filteredItems = useMemo(() => {
     return selectedCategory === "All"
       ? resources

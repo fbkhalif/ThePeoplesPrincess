@@ -1,14 +1,19 @@
 "use client"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Input, Textarea, RadioGroup, Button, Radio } from "@nextui-org/react"
+import {
+  Input,
+  Card,
+  Textarea,
+  RadioGroup,
+  Button,
+  Radio,
+} from "@nextui-org/react"
 import { ArrowLeft, ArrowRight, Plus, Trash2 } from "lucide-react"
-
 const steps = ["Personal Info", "Posting Details", "Additional Info", "Review"]
 
-export default function CreatePostingPage() {
+export default async function CreatePostingPage() {
   const router = useRouter()
   const [step, setStep] = useState(0)
   const [formData, setFormData] = useState({
@@ -76,6 +81,7 @@ export default function CreatePostingPage() {
                 <Input
                   type="text"
                   size="sm"
+                  className="max-w-32"
                   id="creatorName"
                   name="creatorName"
                   label="Your Name"
@@ -89,6 +95,7 @@ export default function CreatePostingPage() {
                   type="text"
                   id="location"
                   size="sm"
+                  className="max-w-32"
                   name="location"
                   label="Location"
                   value={formData.location}
@@ -270,73 +277,75 @@ export default function CreatePostingPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container max-w-3xl mx-auto py-8 px-4">
       <Link
         href="/"
         className="inline-flex items-center mb-4 text-sm text-accent-light hover:text-accent-dark">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to all postings
       </Link>
-      <h1 className="text-xl text-center font-bold mb-8">
+      <h1 className="text-xl text-center text-secondary font-bold mb-8">
         Create New Mutual Aid Posting
       </h1>
-      <div className="mb-8">
-        <ol className="flex items-center w-full text-sm font-medium text-left whitespace-nowrap text-gray-500 dark:text-gray-400 sm:text-base">
-          {steps.map((stepName, index) => (
-            <li
-              key={stepName}
-              className={`flex md:w-full items-center ${
-                index < step ? "text-accent dark:text-accent-dark" : ""
-              } ${
-                index <= step
-                  ? 'after:content-[""] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700'
-                  : ""
-              }`}>
-              <span className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
-                {index < step ? (
-                  <svg
-                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2.5"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-                  </svg>
-                ) : (
-                  <span
-                    className={`mr-2 ${
-                      index === step ? "text-accent-light" : ""
-                    }`}>
-                    {index + 1}
-                  </span>
-                )}
-                {stepName}
-              </span>
-            </li>
-          ))}
-        </ol>
-      </div>
-      <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
-        {renderStep()}
-        <div className="flex justify-between">
-          {step > 0 && (
-            <button
-              type="button"
-              variant="outline"
-              onClick={() => setStep(step - 1)}>
-              <ArrowLeft className="mr-2 h-4 w-4" /> Previous
-            </button>
-          )}
-          <button type="submit">
-            {step < steps.length - 1 ? (
-              <>
-                Next <ArrowRight className="ml-2 h-4 w-4" />
-              </>
-            ) : (
-              "Create Posting"
-            )}
-          </button>
+      <Card className="p-4">
+        <div className="mb-8">
+          <ol className="flex items-center w-full text-sm font-medium text-left whitespace-nowrap text-gray-500 dark:text-gray-400 sm:text-base">
+            {steps.map((stepName, index) => (
+              <li
+                key={stepName}
+                className={`flex md:w-full items-center ${
+                  index < step ? "text-accent dark:text-accent-dark" : ""
+                } ${
+                  index <= step
+                    ? 'after:content-[""] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700'
+                    : ""
+                }`}>
+                <span className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
+                  {index < step ? (
+                    <svg
+                      className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 20 20">
+                      <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                    </svg>
+                  ) : (
+                    <span
+                      className={`mr-2 ${
+                        index === step ? "text-accent-light" : ""
+                      }`}>
+                      {index + 1}
+                    </span>
+                  )}
+                  {stepName}
+                </span>
+              </li>
+            ))}
+          </ol>
         </div>
-      </form>
+        <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
+          {renderStep()}
+          <div className="flex justify-between">
+            {step > 0 && (
+              <button
+                type="button"
+                variant="outline"
+                onClick={() => setStep(step - 1)}>
+                <ArrowLeft className="mr-2 h-4 w-4" /> Previous
+              </button>
+            )}
+            <button type="submit">
+              {step < steps.length - 1 ? (
+                <>
+                  Next <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              ) : (
+                "Create Posting"
+              )}
+            </button>
+          </div>
+        </form>
+      </Card>
     </div>
   )
 }

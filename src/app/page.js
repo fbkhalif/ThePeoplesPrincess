@@ -2,17 +2,24 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { MutualAidCard } from "../components/MutualAidCard"
-import { MutualAidPosting } from "../types/MutualAidPosting"
 import { PrimaryButton } from "../components/PrimaryButton"
 import { ShuffleIcon } from "lucide-react"
 // Mock data for mutual aid postings
-
+import SearchField from "../components/SearchField"
+import { unstable_cache } from "next/cache"
+import { Navbar } from "@nextui-org/react"
 export default function Home() {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filteredPosts, setFilteredPosts] = useState([])
+
   useEffect(() => {
     async function fetchPosts() {
-      const response = await fetch("/api/posts")
+      const response = await fetch("/api/posts", {
+        cache: "force-cache", // Static caching for performance
+        // cache: "no-store", // Use this if posts need to be fresh
+      })
       if (response.ok) {
         const data = await response.json()
         setPosts(data)
@@ -24,6 +31,19 @@ export default function Home() {
 
     fetchPosts()
   }, [])
+  useEffect(() => {
+    const results = posts.filter(
+      (post) =>
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.creatorName.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    setFilteredPosts(results)
+  }, [searchQuery, posts])
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value)
+  }
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -41,9 +61,9 @@ export default function Home() {
           solidarity and make a difference, one post at a time.
         </p>
       </div>
-
+      <SearchField value={searchQuery} onChange={handleSearchChange} />
       <div className="grid grid-cols-1 pt-7 md:grid-cols-2  gap-6">
-        {posts.map((posting) => (
+        {filteredPosts.map((posting) => (
           <MutualAidCard key={posting.id} posting={posting} />
         ))}
       </div>

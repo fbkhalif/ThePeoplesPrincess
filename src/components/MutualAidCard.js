@@ -34,7 +34,6 @@ import {
   LinkIcon,
 } from "lucide-react"
 import CommentCard from "./CommentCard"
-import { MutualAidPosting } from "../types/MutualAidPosting"
 import { ShuffleIcon } from "lucide-react"
 
 export function MutualAidCard({ posting: initialPosting }) {
@@ -50,6 +49,10 @@ export function MutualAidCard({ posting: initialPosting }) {
   const handleToggleStar = async () => {
     setIsStarFilled(!isStarFilled)
     if (!isStarFilled) {
+      setPosting((prevPosting) => ({
+        ...prevPosting,
+        likesNumber: prevPosting.likesNumber + 1,
+      }))
       const response = await fetch(`/api/likes?postId=${posting.id}`, {
         method: "POST",
         body: JSON.stringify({
@@ -71,6 +74,10 @@ export function MutualAidCard({ posting: initialPosting }) {
   const handleToggleShuffle = async () => {
     setIsShuffleFilled(!isShuffleFilled)
     if (!isShuffleFilled) {
+      setPosting((prevPosting) => ({
+        ...prevPosting,
+        repostNumber: prevPosting.repostNumber + 1,
+      }))
       const response = await fetch(`/api/reposts?postId=${posting.id}`, {
         method: "POST",
         body: JSON.stringify({
@@ -152,10 +159,9 @@ export function MutualAidCard({ posting: initialPosting }) {
 
     const newCommentData = {
       text: newComment,
-      commenter: "Anonymous", // For now, we assume anonymous commenting
+      commenter: "Anonymous",
     }
 
-    // Add the new comment locally for demonstration
     setComments([...comments, newCommentData])
     setNewComment("")
 
@@ -194,7 +200,7 @@ export function MutualAidCard({ posting: initialPosting }) {
           <div className="flex flex-row gap-2 ml-auto">
             <ShareIcon
               onClick={handleShare}
-              className=" text-gray-400 cursor-pointer h-5 w-5"
+              className=" text-gray-400 hover:text-slate-500 cursor-pointer h-5 w-5"
             />
           </div>
         </CardHeader>
@@ -207,7 +213,7 @@ export function MutualAidCard({ posting: initialPosting }) {
             </span>
           ) : (
             <span className="text-slate-500">
-              {"Created: " + moment(posting.createdAt).format("MMMM Do YYYY") ||
+              {moment(posting.createdAt).format("MMMM Do YYYY") ||
                 "Created: N/A"}
             </span>
           )}
@@ -221,43 +227,40 @@ export function MutualAidCard({ posting: initialPosting }) {
             {posting.description || "No description"}
           </p>
           {posting.gofundmeUrl && posting.amountRaised != 0 && (
-            <Chip
-              color="success"
-              variant="dot"
-              className="text-xs border-accent-light/30 mb-8">
+            <Chip color="success" variant="flat" className="text-xs  mb-8">
               Go fund me amount raised: ${posting.amountRaised || "unknown"}
             </Chip>
           )}
         </div>
-        <div className="flex flex-row text-primary-light mb-2">
-          <div className="flex text-xs mr-2 items-center">
+        <div className="flex flex-row  mb-2">
+          <div className="flex text-xs items-center">
             <Button
               startContent={
                 <StarIcon
-                  fill={isStarFilled ? "rgba(87,59,246, 0.5)" : "none"}
+                  fill={isStarFilled ? "#B70E60FF" : "none"}
                   className="h-4 w-4"
                 />
               }
               size="sm"
-              className="p-1"
-              color={isStarFilled ? "primary" : "none"}
+              className={isStarFilled ? "p1 text-secondary" : "p1 text-primary"}
+              color={isStarFilled ? "#B70E60FF" : "none"}
               variant="light"
               onPress={handleToggleStar}>
               <span>{posting.likesNumber || 0} Likes</span>
             </Button>
           </div>
-          <div className="flex text-xs text-primary-light items-center mr-2 gap-1">
+          <div className="flex text-xs items-center gap-1">
             <Button
               startContent={<ShuffleIcon className="h-4 w-4" />}
               size="sm"
-              className="p-1"
-              color={isShuffleFilled ? "primary" : "none"}
+              className={isShuffleFilled ? " text-secondary" : " text-primary"}
+              color={isShuffleFilled ? "#B70E60FF" : "none"}
               variant="light"
               onPress={handleToggleShuffle}>
               <span>{posting.repostNumber || 0} Reposts</span>
             </Button>
           </div>
-          <div className="flex text-xs  text-primary-light items-center gap-1">
+          <div className="flex text-xs  text-primary items-center gap-1">
             <Button
               startContent={<GlobeIcon className="h-4 w-4" />}
               size="sm"
@@ -269,7 +272,7 @@ export function MutualAidCard({ posting: initialPosting }) {
             </Button>
           </div>
         </div>
-        <div className="bg-pink-100/50 p-3 rounded-xl">
+        <div className="bg-secondary/10 border p-2 rounded-xl">
           <p className="text-xs text-secondary mb-1">Donate below!</p>
           {posting.gofundmeUrl && (
             <Button
@@ -302,7 +305,7 @@ export function MutualAidCard({ posting: initialPosting }) {
           )}
           {posting.zelle && (
             <Button
-              className="text-white mb-2 ml-1"
+              className="text-white ml-1"
               size="sm"
               style={{ backgroundColor: "var(--zelle)" }}
               startContent={<DollarSign className="h-4 w-4" />}>
@@ -362,7 +365,7 @@ export function MutualAidCard({ posting: initialPosting }) {
       </CardBody>
 
       <CardFooter className="inline-block text-xs pt-3 text-right text-primary">
-        <Link href={`/posting/${posting.id}`} passHref>
+        <Link href={`/post/${posting.id}`} passHref>
           <Button
             className="text-xs"
             size="small"
@@ -376,7 +379,7 @@ export function MutualAidCard({ posting: initialPosting }) {
       </CardFooter>
       <hr></hr>
       <CardFooter className="grid max-h-48 overflow-scroll grid-cols-1">
-        <p className="col-span-1 mb-1 text-sm max-h-36 overflow-scroll text-slate-600">
+        <p className="col-span-1 mb-1 text-sm max-h-24 overflow-scroll text-slate-600">
           Comments
         </p>
         {/* Textarea for adding a comment */}
