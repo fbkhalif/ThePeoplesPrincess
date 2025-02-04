@@ -31,12 +31,13 @@ export function Navbar2() {
       maxWidth={"full"}
       onMenuOpenChange={setIsMenuOpen}
       size="small"
-      className="text-white min-w-full h-12 px-0 p-0 border border-b">
+      className="text-white justify-between h-12 px-0 p-0 border border-b">
       <NavbarContent className="container  flex justify-between items-center h-full p-0">
         {/* Brand */}
         <NavbarBrand>
           <Link href="/" className="text-xs font-extrabold text-secondary">
             👑 the people's princess
+            <p>[beta]</p>
           </Link>
         </NavbarBrand>
 

@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client"
-
+import { NextRequest } from "next/server"
 const prisma = new PrismaClient()
 
-export async function PATCH({ params }) {
-  const { id } = params
+export async function PATCH(request: NextRequest) {
+  const { id } = await request.json()
 
   try {
     const updatedPost = await prisma.mp_posting.update({

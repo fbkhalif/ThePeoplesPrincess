@@ -52,13 +52,9 @@ export default function Home() {
         <p className="text-slate-500 text-xs py-4 font-light md:px-20 lg:px-32 sm:px-4">
           Mutual aid postings are a quick, personal way to support communities,
           inspired by how people use Instagram stories to share urgent needs of
-          people they know or know of who are in need of help. Unlike GoFundMe
-          or nonprofits, they skip the red tape, sending help directly to those
-          who need it most. We are also aiming to try to make sure fraud doesn't
-          happen, by using AI. From wildfire relief in California to covering
-          rent, these postings create real-time, local impact. Just click, learn
-          more, and donate—anything helps! It’s a heartfelt way to show
-          solidarity and make a difference, one post at a time.
+          people they know or know of who are in need of help. From wildfire
+          relief in California to covering rent for people in need, these
+          postings create real-time, local impact. Anything helps!
         </p>
       </div>
       <SearchField value={searchQuery} onChange={handleSearchChange} />

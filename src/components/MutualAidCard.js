@@ -12,7 +12,6 @@ import {
   Button,
 } from "@nextui-org/react"
 import moment from "moment"
-
 import { PrimaryButton } from "../components/PrimaryButton"
 import {
   ArrowRight,
@@ -35,7 +34,7 @@ import {
 } from "lucide-react"
 import CommentCard from "./CommentCard"
 import { ShuffleIcon } from "lucide-react"
-
+import SubHeading from "./SubHeading"
 export function MutualAidCard({ posting: initialPosting }) {
   const [posting, setPosting] = useState(initialPosting)
 
@@ -204,23 +203,29 @@ export function MutualAidCard({ posting: initialPosting }) {
             />
           </div>
         </CardHeader>
-        <div className="flex text-gray-500 items-center mb-4 text-muted-foreground text-[12px]">
-          <Clock10Icon className="mr-1 h-3 w-3" />
-          {posting.updatedAt ? (
-            <span>
-              {moment(posting.updatedAt).format("MMMM Do YYYY") ||
-                "Last updated: N/A"}
-            </span>
-          ) : (
-            <span className="text-slate-500">
-              {moment(posting.createdAt).format("MMMM Do YYYY") ||
-                "Created: N/A"}
-            </span>
-          )}
-          <User className="ml-2 mr-1 h-3 w-3" />
-          <span>{posting.creatorName || "Anonymous"}</span>
-          <MapPin className="ml-2 mr-1 h-3 w-3" />
-          <span>{posting.location || "Unknown"}</span>
+        <div className="flex flex-wrap text-gray-500 gap-2 items-center mb-4 text-muted-foreground text-[12px]">
+          <div className="flex items-center">
+            <Clock10Icon className="mr-1 h-3 w-3" />
+            {posting.updatedAt ? (
+              <span>
+                {moment(posting.updatedAt).format("MMMM Do YYYY") ||
+                  "Last updated: N/A"}
+              </span>
+            ) : (
+              <span className="text-slate-500">
+                {moment(posting.createdAt).format("MMMM Do YYYY") ||
+                  "Created: N/A"}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center">
+            <User className=" mr-1 h-3 w-3" />
+            <span>{posting.creatorName || "Anonymous"}</span>
+          </div>
+          <div className="flex items-center">
+            <MapPin className="mr-1 h-3 w-3" />
+            <span>{posting.location || "Unknown"}</span>
+          </div>
         </div>
         <div className="grid grid-rows-1">
           <p className="text-foreground text-xs mb-2 overflow-scroll max-h-24">
@@ -274,9 +279,9 @@ export function MutualAidCard({ posting: initialPosting }) {
         </div>
         <div className="bg-secondary/10 border p-2 rounded-xl">
           <p className="text-xs text-secondary mb-1">Donate below!</p>
-          {posting.gofundmeUrl && (
+          {posting.gofundmeUrl && posting.gofundmeUrl != "" && (
             <Button
-              className="text-white ml-1"
+              className="text-white mt-1 ml-1"
               size="sm"
               style={{ backgroundColor: "var(--gofundme)" }}
               startContent={<DollarSign className="h-4 w-4" />}>
@@ -288,9 +293,9 @@ export function MutualAidCard({ posting: initialPosting }) {
               </a>
             </Button>
           )}
-          {posting.venmo && (
+          {posting.venmo && posting.venmo != "" && (
             <Button
-              className="text-white ml-1"
+              className="text-white mt-1 ml-1"
               size="sm"
               style={{ backgroundColor: "var(--venmo)" }}
               startContent={<DollarSign className="h-4 w-4" />}>
@@ -303,9 +308,9 @@ export function MutualAidCard({ posting: initialPosting }) {
               </a>
             </Button>
           )}
-          {posting.zelle && (
+          {posting.zelle && posting.zelle != "" && (
             <Button
-              className="text-white ml-1"
+              className="text-white mt-1 ml-1"
               size="sm"
               style={{ backgroundColor: "var(--zelle)" }}
               startContent={<DollarSign className="h-4 w-4" />}>
@@ -365,7 +370,7 @@ export function MutualAidCard({ posting: initialPosting }) {
       </CardBody>
 
       <CardFooter className="inline-block text-xs pt-3 text-right text-primary">
-        <Link href={`/post/${posting.id}`} passHref>
+        {/* <Link href={`/posting/${posting.id}`} passHref>
           <Button
             className="text-xs"
             size="small"
@@ -375,15 +380,16 @@ export function MutualAidCard({ posting: initialPosting }) {
             endContent={<ArrowRightFromLine className="h-4 w-4" />}>
             View Details
           </Button>
-        </Link>
+        </Link> */}
       </CardFooter>
+
+      {/* 
       <hr></hr>
       <CardFooter className="grid max-h-48 overflow-scroll grid-cols-1">
         <p className="col-span-1 mb-1 text-sm max-h-24 overflow-scroll text-slate-600">
           Comments
         </p>
-        {/* Textarea for adding a comment */}
-        {/* Comments List */}
+  
         <div className="mt-4 mb-4 ">
           {comments.length > 0 ? (
             comments.map((comment, index) => (
@@ -414,7 +420,7 @@ export function MutualAidCard({ posting: initialPosting }) {
             Post Comment
           </Button>
         </div>
-      </CardFooter>
+      </CardFooter>*/}
     </Card>
   )
 }
