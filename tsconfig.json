@@ -25,7 +25,8 @@
     "**/*.ts",
     "**/*.tsx",
     "src/app/post/[id]/page.js",
-    "src/app/post/[id]/page.js"
+    "src/app/post/[id]/page.js",
+    "src/app/api/views/[id]/route.js"
   ],
   "exclude": ["node_modules"]
 }

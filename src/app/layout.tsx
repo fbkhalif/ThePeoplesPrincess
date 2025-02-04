@@ -7,10 +7,6 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 })
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-})
 
 export const metadata = {
   title: "Mutual Aid Postings",
@@ -25,10 +21,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ReactQueryProvider>
-          <Navbar2 />
-          <main className="min-h-screen bg-background">{children}</main>
-        </ReactQueryProvider>
+        <Navbar2 />
+        <main className="min-h-screen bg-background">{children}</main>
       </body>
     </html>
   )

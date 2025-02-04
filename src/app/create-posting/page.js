@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import axios from "axios"
 import {
   Input,
   Textarea,
@@ -16,7 +15,6 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import Form from "next/form"
 import SubHeading from "../../components/SubHeading"
-import { createPost } from "../../lib/actions/Post"
 export default function CreatePostingPage() {
   const router = useRouter()
   const [formData, setFormData] = useState({
@@ -44,10 +42,17 @@ export default function CreatePostingPage() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
     setLoading(true)
+
     try {
-      await axios.post("/api/post", formData)
+      await fetch("/api/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+      alert("Successfully created post")
       router.push("/")
     } catch (error) {
       console.error("Error submitting form:", error)
@@ -70,7 +75,7 @@ export default function CreatePostingPage() {
         </h2>
         <Form
           // onSubmit={handleSubmit}
-          action={createPost}
+          action={handleSubmit}
           className="space-y-6 px-6">
           <div className="flex gap-2">
             <Input
