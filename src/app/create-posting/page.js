@@ -11,7 +11,7 @@ import {
   Radio,
   CardFooter,
 } from "@nextui-org/react"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Sparkles } from "lucide-react"
 import Link from "next/link"
 import Form from "next/form"
 import SubHeading from "../../components/SubHeading"
@@ -60,7 +60,31 @@ export default function CreatePostingPage() {
       setLoading(false)
     }
   }
+  const handleAutoGenerate = async () => {
+    const url = formData.gofundmeUrl
+    if (!url) {
+      alert("Please enter a GoFundMe URL")
+      return
+    }
 
+    try {
+      const response = await fetch(
+        `/api/gofundme?url=${encodeURIComponent(url)}`
+      )
+      const data = await response.json()
+      const amountRaised = parseFloat(data.amountRaised)
+      const goalAmount = parseFloat(data.goalAmount)
+
+      setFormData((prev) => ({
+        ...prev,
+        title: data.title || prev.title,
+        description: data.description || prev.description,
+        amountRaised: amountRaised || prev.amountRaised,
+      }))
+    } catch (error) {
+      console.error("Error fetching GoFundMe data:", error)
+    }
+  }
   return (
     <div className="container max-w-2xl mx-auto py-8 px-4">
       <Link
@@ -70,7 +94,7 @@ export default function CreatePostingPage() {
       </Link>
 
       <Card className="px-8 py-6 border border-gray-300">
-        <h2 className="text-xl text-center py-2 pb-6 font-bold">
+        <h2 className="text-xl text-center text-secondary py-2 pb-8 font-bold">
           Create a Posting
         </h2>
         <Form
@@ -82,6 +106,7 @@ export default function CreatePostingPage() {
               isRequired
               name="creatorName"
               label="Name"
+              placeholder="Your name"
               labelPlacement="outside"
               value={formData.creatorName}
               onChange={handleChange}
@@ -90,6 +115,7 @@ export default function CreatePostingPage() {
               isRequired
               name="location"
               label="Location"
+              placeholder="City, State"
               labelPlacement="outside"
               value={formData.location}
               onChange={handleChange}
@@ -108,10 +134,29 @@ export default function CreatePostingPage() {
               Someone else
             </Radio>
           </RadioGroup>
+          <div className="flex pb-3 gap-2">
+            <Input
+              name="gofundmeUrl"
+              label="Auto-populate fields from go fund me link!"
+              placeholder="https://www.gofundme.com/f/..."
+              labelPlacement="outside"
+              value={formData.gofundmeUrl}
+              onChange={handleChange}
+            />
+            <Button
+              color="success"
+              className="mt-6"
+              onPress={handleAutoGenerate}>
+              Generate
+            </Button>
+          </div>
+
           <Input
             isRequired
             name="title"
             label="Title"
+            placeholder="Title of the posting"
+            className="mt-4"
             labelPlacement="outside"
             value={formData.title}
             onChange={handleChange}
@@ -121,12 +166,15 @@ export default function CreatePostingPage() {
             name="description"
             labelPlacement="outside"
             label="Description"
+            placeholder="Description of the posting. Include details like why you need help, how the funds will be used, etc."
             value={formData.description}
             onChange={handleChange}
           />
+
           <div className="grid md:grid-cols-2 m-0 gap-2 lg:grid-cols-3">
             <Input
               type="url"
+              className="mt-0"
               name="gofundmeUrl"
               label="GoFundMe link"
               labelPlacement="outside"

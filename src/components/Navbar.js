@@ -56,6 +56,11 @@ export function Navbar2() {
         {/* Desktop Links */}
         <NavbarContent className="hidden sm:flex" justify="end">
           <Link
+            href="/about"
+            className="text-xs mr-2 hover:text-slate-400 text-black whitespace-nowrap">
+            About
+          </Link>
+          <Link
             href="/resources"
             className="text-xs mr-2 hover:text-slate-400 text-black whitespace-nowrap">
             Mutual Aid Resources

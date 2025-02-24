@@ -8,11 +8,14 @@ import { ShuffleIcon } from "lucide-react"
 import SearchField from "../components/SearchField"
 import { unstable_cache } from "next/cache"
 import { Navbar } from "@nextui-org/react"
+
 export default function Home() {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [filteredPosts, setFilteredPosts] = useState([])
+  const [sortCriteria, setSortCriteria] = useState("createdAt") // default sorting by createdAt
+  const [sortOrder, setSortOrder] = useState("asc") // default to ascending order
 
   useEffect(() => {
     async function fetchPosts() {
@@ -31,6 +34,7 @@ export default function Home() {
 
     fetchPosts()
   }, [])
+
   useEffect(() => {
     const results = posts.filter(
       (post) =>
@@ -38,11 +42,46 @@ export default function Home() {
         post.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.creatorName.toLowerCase().includes(searchQuery.toLowerCase())
     )
-    setFilteredPosts(results)
-  }, [searchQuery, posts])
+
+    // Sort filtered posts based on the selected sort criteria and order
+    const sortedPosts = results.sort((a, b) => {
+      let compareValue = 0
+
+      if (sortCriteria === "createdAt") {
+        compareValue = new Date(b.createdAt) - new Date(a.createdAt) // Sort by most recent first
+      }
+      if (sortCriteria === "urgencyLevel") {
+        compareValue = b.urgencyLevel - a.urgencyLevel // Sort by urgency level, assuming it's a numeric value
+      }
+      if (sortCriteria === "Location") {
+        compareValue = a.location.localeCompare(b.location) // Sort by location alphabetically
+      }
+      if (sortCriteria === "name") {
+        compareValue = a.creatorName.localeCompare(b.creatorName) // Sort by creator name alphabetically
+      }
+      if (sortCriteria === "likes") {
+        compareValue = a.likesNumber - b.likesNumber // Sort by likes
+      }
+      if (sortCriteria === "reposts") {
+        compareValue = a.repostNumber - b.repostNumber // Sort by reposts
+      }
+
+      return sortOrder === "asc" ? compareValue : -compareValue // Reverse for descending order
+    })
+
+    setFilteredPosts(sortedPosts)
+  }, [searchQuery, posts, sortCriteria, sortOrder])
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value)
+  }
+
+  const handleSortChange = (e) => {
+    setSortCriteria(e.target.value)
+  }
+
+  const handleOrderChange = (e) => {
+    setSortOrder(e.target.value)
   }
 
   return (
@@ -55,13 +94,34 @@ export default function Home() {
           people they know or know of who are in need of help. From wildfire
           relief in California to covering rent for people in need, these
           postings create real-time, local impact. Anything helps!
+          <b>
+            {" "}
+            TLDR, our goal is to centralize mutual aid postings that typically
+            circulate on social media!
+          </b>
         </p>
-      </div>
-      <SearchField value={searchQuery} onChange={handleSearchChange} />
-      <div className="grid grid-cols-1 pt-7 md:grid-cols-2  gap-6">
-        {filteredPosts.map((posting) => (
-          <MutualAidCard key={posting.id} posting={posting} />
-        ))}
+        <nav className="flex flex-col md:flex-row justify-between items-center mb-4">
+          <SearchField value={searchQuery} onChange={handleSearchChange} />
+          <div className="mb-4">
+            <select
+              value={sortCriteria}
+              onChange={handleSortChange}
+              className="text-sm p-1.5 pr-3 bg-neutral-100 shadow-sm text-neutral-500 rounded-lg">
+              <option value="createdAt">Sort by Date</option>
+              <option value="urgencyLevel">Sort by Urgency Level</option>
+              <option value="Location">Sort by Location</option>
+              <option value="name">Sort by Name</option>
+              <option value="likes">Sort by Likes</option>
+              <option value="reposts">Sort by Reposts</option>
+            </select>
+          </div>
+        </nav>
+
+        <div className="grid grid-cols-1 pt-7 md:grid-cols-2 gap-6">
+          {filteredPosts.map((posting) => (
+            <MutualAidCard key={posting.id} posting={posting} />
+          ))}
+        </div>
       </div>
     </div>
   )

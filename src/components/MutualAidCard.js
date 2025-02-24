@@ -10,6 +10,7 @@ import {
   Chip,
   Input,
   Button,
+  Progress,
 } from "@nextui-org/react"
 import moment from "moment"
 import { PrimaryButton } from "../components/PrimaryButton"
@@ -43,7 +44,6 @@ export function MutualAidCard({ posting: initialPosting }) {
   const [isShuffleFilled, setIsShuffleFilled] = useState(false)
   const [comments, setComments] = useState(posting.comments || [])
   const [newComment, setNewComment] = useState("")
-  const [amountRaised, setAmountRaised] = useState(0)
 
   const handleToggleStar = async () => {
     setIsStarFilled(!isStarFilled)
@@ -233,7 +233,8 @@ export function MutualAidCard({ posting: initialPosting }) {
           </p>
           {posting.gofundmeUrl && posting.amountRaised != 0 && (
             <Chip color="success" variant="flat" className="text-xs  mb-8">
-              Go fund me amount raised: ${posting.amountRaised || "unknown"}
+              Go fund me amount raised: $
+              {posting.amountRaised.toLocaleString() || "unknown"}
             </Chip>
           )}
         </div>
@@ -277,8 +278,8 @@ export function MutualAidCard({ posting: initialPosting }) {
             </Button>
           </div>
         </div>
-        <div className="bg-secondary/10 border p-2 rounded-xl">
-          <p className="text-xs text-secondary mb-1">Donate below!</p>
+        <div className=" border border-secondary mx-4 p-2 bg-secondary/10 shadow-sm rounded-xl">
+          <p className="text-xs text-secondary mb-1">Donate links</p>
           {posting.gofundmeUrl && posting.gofundmeUrl != "" && (
             <Button
               className="text-white mt-1 ml-1"
@@ -369,9 +370,9 @@ export function MutualAidCard({ posting: initialPosting }) {
         </div>
       </CardBody>
 
-      <CardFooter className="inline-block text-xs pt-3 text-right text-primary">
+      <CardFooter className="inline-block text-xs pt-3 text-left text-primary">
         {/* <Link href={`/posting/${posting.id}`} passHref>
-          <Button
+          <Butto
             className="text-xs"
             size="small"
             //  href={`/posting/${posting.id}`}
