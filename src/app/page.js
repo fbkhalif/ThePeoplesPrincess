@@ -87,7 +87,9 @@ export default function Home() {
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="text-center justify-center mb-8 mt-6">
-        <h1 className="text-2xl text-center font-bold">Mutual Aid Postings</h1>
+        <h1 className="text-2xl text-center font-new-spirit font-normal">
+          Mutual Aid Postings
+        </h1>
         <p className="text-slate-500 text-xs py-4 font-light md:px-20 lg:px-32 sm:px-4">
           Mutual aid postings are a quick, personal way to support communities,
           inspired by how people use Instagram stories to share urgent needs of
@@ -100,19 +102,25 @@ export default function Home() {
             circulate on social media!
           </b>
         </p>
-        <nav className="flex flex-col md:flex-row justify-between items-center mb-4">
-          <SearchField value={searchQuery} onChange={handleSearchChange} />
-          <div className="mb-4">
+        <nav className="flex flex-col md:flex-row text-[10px] justify-between items-center mb-4">
+          <SearchField
+            variant="outlined"
+            value={searchQuery}
+            className="text-xs text-accent-light"
+            onChange={handleSearchChange}
+          />
+          <div className="mt-4 mb-4">
+            <span>Sort by: </span>
             <select
               value={sortCriteria}
               onChange={handleSortChange}
-              className="text-sm p-1.5 pr-3 bg-neutral-100 shadow-sm text-neutral-500 rounded-lg">
-              <option value="createdAt">Sort by Date</option>
-              <option value="urgencyLevel">Sort by Urgency Level</option>
-              <option value="Location">Sort by Location</option>
-              <option value="name">Sort by Name</option>
-              <option value="likes">Sort by Likes</option>
-              <option value="reposts">Sort by Reposts</option>
+              className="text-[10px] p-1.5 pr-3 border-neutral-100 border-2 shadow-sm text-neutral-500 rounded-lg">
+              <option value="createdAt">Date</option>
+              <option value="urgencyLevel">Urgency Level</option>
+              <option value="Location">by Location</option>
+              <option value="name">by Name</option>
+              <option value="likes">by Likes</option>
+              <option value="reposts">by Reposts</option>
             </select>
           </div>
         </nav>

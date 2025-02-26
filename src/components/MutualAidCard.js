@@ -192,10 +192,12 @@ export function MutualAidCard({ posting: initialPosting }) {
   }
 
   return (
-    <Card shadow="lg" style={{}} className="rounded-md p-2 ">
+    <Card shadow="lg" style={{}} className="rounded-xl p-2 ">
       <CardBody>
-        <CardHeader className="text-md mb-1 grid grid-cols-5 font-bold p-0 text-secondary">
-          <p className="col-span-4">{posting.title || "No title"}</p>
+        <CardHeader className="text-md mb-1 grid grid-cols-5 font-normal p-0 text-secondary">
+          <p className="col-span-4 font-new-spirit ">
+            {posting.title || "No title"}
+          </p>
           <div className="flex flex-row gap-2 ml-auto">
             <ShareIcon
               onClick={handleShare}

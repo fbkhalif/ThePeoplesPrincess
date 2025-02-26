@@ -32,12 +32,14 @@ export function Navbar2() {
       onMenuOpenChange={setIsMenuOpen}
       size="small"
       className="text-white justify-between h-12 px-0 p-0 border border-b">
-      <NavbarContent className="container  flex justify-between items-center h-full p-0">
+      <NavbarContent className="container flex justify-between items-center h-full p-0">
         {/* Brand */}
         <NavbarBrand>
-          <Link href="/" className="text-xs font-extrabold text-secondary">
+          <Link
+            href="/"
+            className="text-xs  font-new-spirit font-extrabold text-secondary">
             👑 the people's princess
-            <p>[beta]</p>
+            <span className="text-primary font-light text-[10px]"> [beta]</span>
           </Link>
         </NavbarBrand>
 
@@ -57,9 +59,10 @@ export function Navbar2() {
         <NavbarContent className="hidden sm:flex" justify="end">
           <Link
             href="/about"
-            className="text-xs mr-2 hover:text-slate-400 text-black whitespace-nowrap">
+            className="text-xs hover:text-slate-400 text-black whitespace-nowrap">
             About
           </Link>
+
           <Link
             href="/resources"
             className="text-xs mr-2 hover:text-slate-400 text-black whitespace-nowrap">

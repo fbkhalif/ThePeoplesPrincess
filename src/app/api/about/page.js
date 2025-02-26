@@ -3,11 +3,20 @@ import { LinkIcon } from "lucide-react"
 import Link from "next/link"
 const AboutPage = () => {
   return (
-    <div className="container mx-auto py-8 px-20">
+    <div className="container mx-auto py-8 px-8 sm:px-6 md:px-10">
       <div className="mb-14">
-        <h1 className="text-2xl text-center font-bold text-black">About Us</h1>
-        <p className="text-primary text-xs py-4 text-center font-light md:px-20 lg:px-32 sm:px-4">
-          Disclaimer: this site is in progress! Ran by Nina & Fai. Github:{" "}
+        <h1 className="text-2xl text-center font-light mt-10 font-new-spirit text-black">
+          About Us
+        </h1>
+        <p className="text-primary text-xs py-4 text-center font-light lg:px-32 sm:px-4">
+          Disclaimer: this site is in progress! Ran by Nina & Fai.
+          <span>
+            <a
+              className="relative items-center mb-4 p-1.5 underline-offset-4 underline hover:text-accent-dark rounded-md text-accent-light text-[12px]"
+              href="https://github.com/fbkhalif/ThePeoplesPrincess">
+              Github: ThePeoplesPrincess
+            </a>
+          </span>
         </p>
       </div>
 
@@ -34,12 +43,6 @@ const AboutPage = () => {
           We are so grateful to have you be part of this growing community, and
           we're excited about the change we can create together.
         </p>
-
-        <Link
-          className="flex relative items-center max-w-fit mb-4 p-1.5 rounded-md border text-accent-light border-accent-light text-[12px]"
-          href="https://github.com/fbkhalif/ThePeoplesPrincess">
-          Github: ThePeoplesPrincess <LinkIcon className="h-3 w-3  ml-1" />
-        </Link>
       </section>
 
       <section className="bg-accent-light/30 p-6 rounded-lg shadow-lg mb-8">

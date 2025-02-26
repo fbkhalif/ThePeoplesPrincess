@@ -38,6 +38,18 @@ export default {
         success: "#10b981",
         info: "#3b82f6",
       },
+      fontFamily: {
+        "new-spirit": ['"new-spirit"', "serif"],
+        "new-spirit-condensed": ['"new-spirit-condensed"', "serif"],
+      },
+      // Optionally add custom font-weight names for clarity
+      fontWeight: {
+        light: "300",
+        normal: "400",
+        medium: "500",
+        semibold: "600",
+        bold: "700",
+      },
     },
   },
   plugins: [nextui()],

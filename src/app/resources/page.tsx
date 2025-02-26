@@ -13,6 +13,7 @@ import {
 import React, { useState, useEffect, useMemo } from "react"
 import NavbarPostings from "../../components/NavbarPostings"
 import { Share } from "lucide-react"
+import Loading from "../loading"
 const columns = [
   {
     key: "name",
@@ -79,9 +80,9 @@ export default function ResourcesPage() {
 
   if (loading) {
     return (
-      <div>
-        <p>Loading...</p>
-      </div>
+      <>
+        <Loading />
+      </>
     )
   }
   const getCategoryLabel = (value) => {
@@ -92,7 +93,9 @@ export default function ResourcesPage() {
   return (
     <div className="container mx-auto p-4">
       <div className="text-center justify-center mb-8 mt-6">
-        <h1 className="text-2xl text-center font-bold">Mutual Aid Resources</h1>
+        <h1 className="text-2xl text-center  font-new-spirit font-light">
+          Mutual Aid Resources
+        </h1>
         <p className="text-slate-500 text-xs py-4 font-light md:px-20 lg:px-32 sm:px-4">
           This list is a compilation of links to Google Sheets containing
           <b> volunteering opportunities</b>, <b>donation sites</b>,{" "}
@@ -102,12 +105,14 @@ export default function ResourcesPage() {
           free to add your own links to other resources.
         </p>
       </div>
+
       <NavbarPostings
         categoriesOptions={categoriesOptions}
         selectedCategories={selectedCategory}
         filterItemsCategories={categoriesOptions}
         handleFilterChange={setSelectedCategory}
       />
+
       <Table
         classNames={{
           base: "min-w-full border-one mt-2 bg-white",

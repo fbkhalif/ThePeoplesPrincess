@@ -11,7 +11,7 @@ import {
   Radio,
   CardFooter,
 } from "@nextui-org/react"
-import { ArrowLeft, Sparkles } from "lucide-react"
+import { ArrowLeft, Sparkle } from "lucide-react"
 import Link from "next/link"
 import Form from "next/form"
 import SubHeading from "../../components/SubHeading"
@@ -89,12 +89,12 @@ export default function CreatePostingPage() {
     <div className="container max-w-2xl mx-auto py-8 px-4">
       <Link
         href="/"
-        className="inline-flex items-center mb-4 text-sm text-blue-600 hover:text-blue-800">
+        className="inline-flex items-center mb-4 text-sm text-accent hover:text-accent-dark">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to all postings
       </Link>
 
-      <Card className="px-8 py-6 border border-gray-300">
-        <h2 className="text-xl text-center text-secondary py-2 pb-8 font-bold">
+      <Card className="px-8 sm:px-4 py-6 border border-gray-300">
+        <h2 className="text-xl text-center  font-new-spirit  text-secondary py-2 pb-8 font-light">
           Create a Posting
         </h2>
         <Form
@@ -134,7 +134,7 @@ export default function CreatePostingPage() {
               Someone else
             </Radio>
           </RadioGroup>
-          <div className="flex pb-3 gap-2">
+          <div className="flex mt-3 pt-2 pb-3 gap-2">
             <Input
               name="gofundmeUrl"
               label="Auto-populate fields from go fund me link!"
@@ -145,7 +145,8 @@ export default function CreatePostingPage() {
             />
             <Button
               color="success"
-              className="mt-6"
+              className="mt-6 text-white"
+              endContent={<Sparkle height={50} width={50} />}
               onPress={handleAutoGenerate}>
               Generate
             </Button>
@@ -193,8 +194,20 @@ export default function CreatePostingPage() {
               type="url"
               name="zelle"
               label="Zelle link"
+              placeholder=""
               labelPlacement="outside"
               value={formData.zelle}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="pt-1">
+            <Input
+              type="text"
+              name="additionalLinks"
+              label="Additional Links"
+              labelPlacement="outside"
+              placeholder="other link info separated by commas"
+              value={formData.additionalLinks}
               onChange={handleChange}
             />
           </div>
